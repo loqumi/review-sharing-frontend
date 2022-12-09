@@ -1,24 +1,23 @@
 import React, { useEffect } from "react";
 import Layout from "./Layout";
-import Welcome from "../components/Welcome";
+import FormAddReview from "../components/FormAddReview";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const Dashboard = () => {
+const AddReview = () => {
   const navigate = useNavigate();
-  const { isError } = useSelector((state) => state.auth);
+  const { isError, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (isError) {
       navigate("/");
     }
-  }, [isError, navigate]);
-
+  }, [isError, user, navigate]);
   return (
     <Layout>
-      <Welcome />
+      <FormAddReview />
     </Layout>
   );
 };
 
-export default Dashboard;
+export default AddReview;

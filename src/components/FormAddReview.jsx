@@ -1,39 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const FormEditProduct = () => {
+const FormAddReview = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
-  const { id } = useParams();
 
-  useEffect(() => {
-    const getProductById = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/products/${id}`
-        );
-        setName(response.data.name);
-        setPrice(response.data.price);
-      } catch (error) {
-        if (error.response) {
-          setMsg(error.response.data.msg);
-        }
-      }
-    };
-    getProductById();
-  }, [id]);
-
-  const updateProduct = async (e) => {
+  const saveReview = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:5000/products/${id}`, {
+      await axios.post("http://localhost:5000/reviews", {
         name: name,
         price: price,
       });
-      navigate("/products");
+      navigate("/reviews");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);
@@ -43,12 +25,12 @@ const FormEditProduct = () => {
 
   return (
     <div>
-      <h1 className="title">Products</h1>
-      <h2 className="subtitle">Edit Product</h2>
+      <h1 className="title">Reviews</h1>
+      <h2 className="subtitle">Add New Review</h2>
       <div className="card is-shadowless">
         <div className="card-content">
           <div className="content">
-            <form onSubmit={updateProduct}>
+            <form onSubmit={saveReview}>
               <p className="has-text-centered">{msg}</p>
               <div className="field">
                 <label className="label">Name</label>
@@ -58,7 +40,7 @@ const FormEditProduct = () => {
                     className="input"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Product Name"
+                    placeholder="Review Name"
                   />
                 </div>
               </div>
@@ -78,7 +60,7 @@ const FormEditProduct = () => {
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button is-success">
-                    Update
+                    Save
                   </button>
                 </div>
               </div>
@@ -90,4 +72,4 @@ const FormEditProduct = () => {
   );
 };
 
-export default FormEditProduct;
+export default FormAddReview;
