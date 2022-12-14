@@ -15,7 +15,7 @@ const FormAddReview = () => {
         name: name,
         price: price,
       });
-      navigate("/reviews");
+      navigate("/");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);

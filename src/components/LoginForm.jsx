@@ -9,10 +9,14 @@ import {
   Link,
   Grid,
   Box,
+  IconButton,
   Typography,
   Container,
   Alert,
 } from "@mui/material";
+import GoogleIcon from "@mui/icons-material/Google";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import { FaDiscord } from "react-icons/fa";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -25,7 +29,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user || isSuccess) {
-      navigate("/reviews");
+      navigate("/");
     }
     dispatch(reset());
   }, [user, isSuccess, dispatch, navigate]);
@@ -35,13 +39,25 @@ const LoginForm = () => {
     dispatch(LoginUser({ email, password }));
   };
 
+  const google = () => {
+    window.open("http://localhost:5000/google", "_self");
+  };
+
+  const github = () => {
+    window.open("http://localhost:5000/github", "_self");
+  };
+
+  const discord = () => {
+    window.open("http://localhost:5000/discord", "_self");
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
           borderRadius: 1,
-          marginTop: 12,
+          marginTop: 16,
           padding: 1,
           display: "flex",
           flexDirection: "column",
@@ -91,9 +107,47 @@ const LoginForm = () => {
           >
             {isLoading ? "Loading..." : "Sign in"}
           </Button>
+          <Grid
+            container
+            spacing={6}
+            sx={{ mb: 2 }}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid item>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={google}
+              >
+                <GoogleIcon />
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <IconButton
+                edge="button"
+                color="inherit"
+                onClick={github}
+                aria-label="open drawer"
+              >
+                <GitHubIcon />
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <IconButton
+                edge="button"
+                color="inherit"
+                onClick={discord}
+                aria-label="open drawer"
+              >
+                <FaDiscord />
+              </IconButton>
+            </Grid>
+          </Grid>
           <Grid container>
             <Grid item xs>
-              <Link href="/reviews" variant="body2">
+              <Link href="/" variant="body2">
                 {"Continue without sign in"}
               </Link>
             </Grid>

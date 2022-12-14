@@ -41,14 +41,14 @@ const RegistrationForm = () => {
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 12,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h5">
-          Sign up
+        <Typography component="h1" variant="h4">
+          Sign in
         </Typography>
         <Box component="form" onSubmit={saveUser} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -119,7 +119,7 @@ const RegistrationForm = () => {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link href="/" variant="body2">
+              <Link href="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

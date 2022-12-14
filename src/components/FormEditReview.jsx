@@ -27,11 +27,11 @@ const FormEditReview = () => {
   const updateReview = async (e) => {
     e.preventDefault();
     try {
-      await axios.patch(`http://localhost:5000/reviews/${id}`, {
+      await axios.post(`http://localhost:5000/reviews/${id}`, {
         name: name,
         price: price,
       });
-      navigate("/reviews");
+      navigate("/");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);
@@ -72,7 +72,6 @@ const FormEditReview = () => {
                   />
                 </div>
               </div>
-
               <div className="field">
                 <div className="control">
                   <button type="submit" className="button is-success">

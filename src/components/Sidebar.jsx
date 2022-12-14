@@ -7,7 +7,7 @@ import { LogOut, reset } from "../features/authSlice";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state?.auth);
 
   const logout = () => {
     dispatch(LogOut());
@@ -15,23 +15,25 @@ const Sidebar = () => {
     navigate("/");
   };
 
+  if (!user) return null;
+
   return (
     <div>
       <aside className="menu pl-2 has-shadow">
         <p className="menu-label">General</p>
         <ul className="menu-list">
           <li>
-            <NavLink to={"/dashboard"}>
-              <IoHome /> Dashboard
+            <NavLink to={`/profile/${user.uuid}`}>
+              <IoHome /> Profile
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/products"}>
-              <IoPricetag /> Products
+            <NavLink to={"/"}>
+              <IoPricetag /> Reviews
             </NavLink>
           </li>
         </ul>
-        {user && user.role === "admin" && (
+        {user.role === "admin" && (
           <div>
             <p className="menu-label">Admin</p>
             <ul className="menu-list">

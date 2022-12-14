@@ -10,6 +10,7 @@ import AddReview from "./pages/AddReview";
 import EditReview from "./pages/EditReview";
 import { getMe } from "./features/authSlice";
 import { useDispatch } from "react-redux";
+import Navbar from "./components/Navbar";
 
 function App() {
   const dispatch = useDispatch();
@@ -20,15 +21,16 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/profile/:id" element={<Dashboard />} />
+        <Route path="/reviews/edit/:id" element={<EditReview />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/reg" element={<Registration />} />
         <Route path="/users" element={<Users />} />
         <Route path="/users/add" element={<AddUser />} />
-        <Route path="/reviews" element={<Reviews />} />
+        <Route path="/" element={<Reviews />} />
         <Route path="/reviews/add" element={<AddReview />} />
-        <Route path="/reviews/edit/:id" element={<EditReview />} />
       </Routes>
     </BrowserRouter>
   );

@@ -148,6 +148,7 @@ const Userlist = () => {
             <th>Email</th>
             <th>Created</th>
             <th>Last login</th>
+            <th>Role</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -168,6 +169,7 @@ const Userlist = () => {
               <td>{user.email}</td>
               <td>{user.createdAt}</td>
               <td>{user.updatedAt}</td>
+              <td>{user.role}</td>
               <td>{Number(user.status) ? "banned" : "unbanned"}</td>
             </tr>
           ))}
