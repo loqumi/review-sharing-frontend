@@ -1,61 +1,56 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
-import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import PersonIcon from "@mui/icons-material/Person";
-import InputBase from "@mui/material/InputBase";
-import MenuIcon from "@mui/icons-material/Menu";
+import {
+  AppBar,
+  TextField,
+  Box,
+  Toolbar,
+  Typography,
+  IconButton,
+  Button,
+  MenuItem,
+  Menu,
+} from "@mui/material/";
+import { useTheme } from "@mui/material/styles";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import SearchIcon from "@mui/icons-material/Search";
 
-const Navbar = () => {
+const Navbar = ({ onClick }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { user } = useSelector((state) => state?.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      width: "100%",
-      [theme.breakpoints.up("sm")]: {
-        width: "100ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
+  const handleGetUsers = () => {
+    navigate("/users");
+  };
+
+  const change = () => {
+    navigate(`/users/edit/${user.uuid}`);
+    setAnchorEl(null);
+  };
+
+  const goReviews = () => {
+    navigate("/");
+  };
+
+  const profile = () => {
+    navigate(`/profile/${user.uuid}`);
+    setAnchorEl(null);
+  };
 
   const logout = () => {
     dispatch(LogOut());
@@ -65,37 +60,72 @@ const Navbar = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" color="inherit">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-            onClick={logout}
-          >
-            <MenuIcon />
+          <IconButton sx={{ ml: 1 }} onClick={onClick} color="inherit">
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
           </IconButton>
-          <Search sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-            onClick={logout}
-          >
-            <PersonIcon />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Button onClick={goReviews} color="inherit">
+              Reviews
+            </Button>
+            {user !== null && user.role === "admin" && (
+              <Button onClick={handleGetUsers} color="inherit">
+                Users
+              </Button>
+            )}
+          </Typography>
+          <TextField
+            sx={{ ml: 1, flex: 1 }}
+            label="Search in"
+            id="outlined-size-small"
+            size="small"
+          />
+          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+            <SearchIcon />
           </IconButton>
+          {!user && (
+            <Button color="inherit" onClick={logout}>
+              Login
+            </Button>
+          )}
+          {user && (
+            <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={profile}>Profile</MenuItem>
+                <MenuItem onClick={change}>My account</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
+              </Menu>
+            </div>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
