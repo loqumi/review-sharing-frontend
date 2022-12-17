@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import Layout from "./Layout";
 import FormAddReview from "../components/FormAddReview";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const AddReview = () => {
+const AddReviewPage = () => {
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
 
@@ -13,11 +12,7 @@ const AddReview = () => {
       navigate("/");
     }
   }, [isError, user, navigate]);
-  return (
-    <Layout>
-      <FormAddReview />
-    </Layout>
-  );
+  return <FormAddReview />;
 };
 
-export default AddReview;
+export default AddReviewPage;

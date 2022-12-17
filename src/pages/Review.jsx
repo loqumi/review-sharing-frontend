@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
-import FormAddUser from "../components/FormAddUser";
+import Review from "../components/Review";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const AddUserPage = () => {
+const ReviewPage = () => {
   const navigate = useNavigate();
-  const { isError, user } = useSelector((state) => state.auth);
+  const { isError } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (isError) {
       navigate("/");
     }
-  }, [isError, user, navigate]);
-  return <FormAddUser />;
+  }, [isError, navigate]);
+
+  return <Review />;
 };
 
-export default AddUserPage;
+export default ReviewPage;

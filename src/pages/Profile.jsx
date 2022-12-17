@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import Layout from "./Layout";
-import Welcome from "../components/Welcome";
+import Profile from "../components/Profile";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const Dashboard = () => {
+const ProfilePage = () => {
   const navigate = useNavigate();
   const { isError } = useSelector((state) => state.auth);
 
@@ -14,11 +13,7 @@ const Dashboard = () => {
     }
   }, [isError, navigate]);
 
-  return (
-    <Layout>
-      <Welcome />
-    </Layout>
-  );
+  return <Profile />;
 };
 
-export default Dashboard;
+export default ProfilePage;

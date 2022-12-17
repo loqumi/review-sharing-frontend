@@ -1,14 +1,26 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import {
-  IoTrashBin,
-  IoLockClosedOutline,
-  IoLockOpenOutline,
-  IoCheckboxOutline,
-} from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
+import {
+  Checkbox,
+  Box,
+  Button,
+  IconButton,
+  Typography,
+  CssBaseline,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import BlockIcon from "@mui/icons-material/Block";
 
 const Userlist = () => {
   const [users, setUsers] = useState([]);
@@ -108,74 +120,128 @@ const Userlist = () => {
     }
   };
 
+  const isSelected = (name) => selectedUsers.indexOf(name) !== -1;
+
   return (
-    <div>
-      <h1 className="title">Users</h1>
-      <h2 className="subtitle">Toolbar</h2>
-      <div className="field is-grouped">
-        <p className="control">
-          <button className="button is-danger" onClick={deleteUsers}>
-            <IoTrashBin />
-            Delete user
-          </button>
-        </p>
-        <p className="control">
-          <button className="button is-link" onClick={blockUsers}>
-            <IoLockClosedOutline />
-          </button>
-        </p>
-        <p className="control">
-          <button className="button is-link" onClick={unBlockUsers}>
-            <IoLockOpenOutline />
-          </button>
-        </p>
-      </div>
-      <h2 className="subtitle">List of Users</h2>
-      <table className="table is-striped is-fullwidth">
-        <thead>
-          <tr>
-            <th>
-              <button
-                className="button"
-                onClick={() => handleSelectUsers(users)}
+    <TableContainer component={Paper}>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 12,
+          display: "flex",
+          alignItems: "right",
+          flexDirection: "column",
+          pl: 6,
+        }}
+      >
+        <Typography component="h1" variant="h4">
+          Toolbar
+        </Typography>
+        <Box
+          sx={{
+            marginTop: 3,
+            display: "flex",
+            alignItems: "right",
+          }}
+        >
+          <Button
+            onClick={deleteUsers}
+            color="error"
+            startIcon={<DeleteIcon />}
+          >
+            Delete
+          </Button>
+          <Button onClick={blockUsers} color="error" startIcon={<BlockIcon />}>
+            Block
+          </Button>
+          <Button
+            onClick={unBlockUsers}
+            color="success"
+            startIcon={<BlockIcon />}
+          >
+            Unblock
+          </Button>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          marginTop: 2,
+          display: "flex",
+          alignItems: "right",
+          flexDirection: "column",
+          pl: 6,
+        }}
+      >
+        <Typography component="h1" variant="h4">
+          Table of Users
+        </Typography>
+      </Box>
+      <Table sx={{ minWidth: 650, marginTop: 2 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ p: 0 }} align="center">
+              <Checkbox
+                color="primary"
+                onChange={() => handleSelectUsers(users)}
+                inputProps={{
+                  "aria-label": "select all desserts",
+                }}
+              />
+            </TableCell>
+            <TableCell align="right">USER NAME/LASTNAME</TableCell>
+            <TableCell align="center">EMAIL</TableCell>
+            <TableCell align="center">STATUS</TableCell>
+            <TableCell align="center">ROLE</TableCell>
+            <TableCell align="center">CREATED AT</TableCell>
+            <TableCell align="center">LAST UPDATE</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {users.map((user) => {
+            const isItemSelected = isSelected(user.uuid);
+            return (
+              <TableRow
+                hover
+                checked={selectedUsers.includes(user.uuid)}
+                onClick={() => handleSelectUser(user.uuid)}
+                key={user.uuid}
+                selected={isItemSelected}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <IoCheckboxOutline />
-                Select
-              </button>
-            </th>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Created</th>
-            <th>Last login</th>
-            <th>Role</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users?.map((user) => (
-            <tr key={user.uuid}>
-              <td>
-                <label className="checkbox">
-                  <input
+                <TableCell align="center">
+                  <Checkbox
                     checked={selectedUsers.includes(user.uuid)}
-                    type="checkbox"
                     onChange={() => handleSelectUser(user.uuid)}
                   />
-                </label>
-              </td>
-              <td>{user.uuid}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.createdAt}</td>
-              <td>{user.updatedAt}</td>
-              <td>{user.role}</td>
-              <td>{Number(user.status) ? "banned" : "unbanned"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+                </TableCell>
+                <TableCell component="th" scope="row" align="right">
+                  <Button
+                    variant="text"
+                    align="right"
+                    onClick={() => navigate(`/profile/${user.uuid}`)}
+                  >
+                    {user.name}
+                  </Button>
+                  <IconButton
+                    variant="text"
+                    onClick={() => navigate(`/users/edit/${user.uuid}`)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </TableCell>
+                <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="center">
+                  {Number(user.status) ? "banned" : "unbanned"}
+                </TableCell>
+                <TableCell align="center">{user.role}</TableCell>
+                <TableCell align="center">{user.createdAt}</TableCell>
+                <TableCell align="center">{user.updatedAt}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 

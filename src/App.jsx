@@ -1,6 +1,9 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import { getMe } from "./features/authSlice";
+import { useDispatch } from "react-redux";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import Profile from "./pages/Profile";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import Users from "./pages/Users";
@@ -9,10 +12,8 @@ import Reviews from "./pages/Reviews";
 import AddReview from "./pages/AddReview";
 import EditReview from "./pages/EditReview";
 import EditUser from "./pages/EditUser";
-import { getMe } from "./features/authSlice";
-import { useDispatch } from "react-redux";
+import Review from "./pages/Review";
 import Navbar from "./components/Navbar";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 function App() {
   const [darkMode, setDarkMode] = React.useState(false);
@@ -39,7 +40,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <Navbar onClick={handleClick} />
         <Routes>
-          <Route path="/profile/:id" element={<Dashboard />} />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/reviews/edit/:id" element={<EditReview />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reg" element={<Registration />} />
@@ -47,6 +48,7 @@ function App() {
           <Route path="/users/add" element={<AddUser />} />
           <Route path="/users/edit/:id" element={<EditUser />} />
           <Route path="/" element={<Reviews />} />
+          <Route path="/reviews/:id" element={<Review />} />
           <Route path="/reviews/add" element={<AddReview />} />
         </Routes>
       </ThemeProvider>

@@ -21,7 +21,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const Navbar = ({ onClick }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { user } = useSelector((state) => state?.auth);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();

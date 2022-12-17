@@ -15,7 +15,7 @@ import Container from "@mui/material/Container";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
-  const { user } = useSelector((state) => state?.auth);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   if (user && user.name === "") navigate(`/users/edit/${user.uuid}`);
@@ -47,7 +47,6 @@ const ReviewList = () => {
       .catch(login);
     getReviews();
   };
-
   return (
     <Container sx={{ py: 8 }} component="main" maxWidth="md">
       <CssBaseline />
@@ -81,7 +80,14 @@ const ReviewList = () => {
                     {(review.user.name === user.name ||
                       user.role === "admin") && (
                       <div>
-                        <Button size="small">View</Button>
+                        <Button
+                          size="small"
+                          onClick={() => {
+                            navigate(`/reviews/${review.uuid}`);
+                          }}
+                        >
+                          View
+                        </Button>
                         <Button
                           size="small"
                           onClick={() => {

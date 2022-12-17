@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import Layout from "./Layout";
 import Userlist from "../components/Userlist";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const Users = () => {
+const UsersPage = () => {
   const navigate = useNavigate();
   const { isError, user } = useSelector((state) => state.auth);
 
@@ -13,11 +12,7 @@ const Users = () => {
       navigate("/");
     }
   }, [isError, user, navigate]);
-  return (
-    <Layout>
-      <Userlist />
-    </Layout>
-  );
+  return <Userlist />;
 };
 
-export default Users;
+export default UsersPage;
