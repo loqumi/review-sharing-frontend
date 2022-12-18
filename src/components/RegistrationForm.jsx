@@ -24,10 +24,10 @@ const RegistrationForm = () => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:5000/users", {
-        name: name,
-        email: email,
-        password: password,
-        confPassword: confPassword,
+        name,
+        email,
+        password,
+        confPassword,
       });
       navigate("/");
     } catch (error) {

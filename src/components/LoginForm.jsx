@@ -127,7 +127,7 @@ const LoginForm = () => {
             </Grid>
             <Grid item>
               <IconButton
-                edge="button"
+                edge="start"
                 color="inherit"
                 onClick={github}
                 aria-label="open drawer"
@@ -137,7 +137,7 @@ const LoginForm = () => {
             </Grid>
             <Grid item>
               <IconButton
-                edge="button"
+                edge="start"
                 color="inherit"
                 onClick={discord}
                 aria-label="open drawer"

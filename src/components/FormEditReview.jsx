@@ -3,8 +3,12 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 const FormEditReview = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [title, setTitle] = useState("");
+  const [product, setProduct] = useState("");
+  const [group, setGroup] = useState("");
+  const [tag, setTag] = useState("");
+  const [text, setText] = useState("");
+  const [rating, setRating] = useState("");
   const [msg, setMsg] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
@@ -13,8 +17,12 @@ const FormEditReview = () => {
     const getReviewById = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/reviews/${id}`);
-        setName(response.data.name);
-        setPrice(response.data.price);
+        setTitle(response.data.title);
+        setProduct(response.data.product);
+        setGroup(response.data.group);
+        setTag(response.data.tag);
+        setText(response.data.text);
+        setRating(response.data.rating);
       } catch (error) {
         if (error.response) {
           setMsg(error.response.data.msg);
@@ -28,8 +36,12 @@ const FormEditReview = () => {
     e.preventDefault();
     try {
       await axios.post(`http://localhost:5000/reviews/${id}`, {
-        name: name,
-        price: price,
+        title,
+        product,
+        group,
+        tag,
+        text,
+        rating,
       });
       navigate("/");
     } catch (error) {
@@ -54,8 +66,8 @@ const FormEditReview = () => {
                   <input
                     type="text"
                     className="input"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                     placeholder="Review Name"
                   />
                 </div>
@@ -66,8 +78,57 @@ const FormEditReview = () => {
                   <input
                     type="text"
                     className="input"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
+                    value={product}
+                    onChange={(e) => setProduct(e.target.value)}
+                    placeholder="Price"
+                  />
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">Price</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={group}
+                    onChange={(e) => setGroup(e.target.value)}
+                    placeholder="Price"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Price</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={tag}
+                    onChange={(e) => setTag(e.target.value)}
+                    placeholder="Price"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Price</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="Price"
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">Price</label>
+                <div className="control">
+                  <input
+                    type="text"
+                    className="input"
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
                     placeholder="Price"
                   />
                 </div>

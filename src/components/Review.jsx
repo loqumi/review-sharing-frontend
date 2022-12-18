@@ -4,16 +4,23 @@ import { useParams } from "react-router-dom";
 import { CssBaseline, Container, Box, Typography } from "@mui/material/";
 
 const Review = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [title, setTitle] = useState("");
+  const [product, setProduct] = useState("");
+  const [group, setGroup] = useState("");
+  const [tag, setTag] = useState("");
+  const [text, setText] = useState("");
+  const [rating, setRating] = useState("");
   const { id } = useParams();
-
   useEffect(() => {
     const getReviewById = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/reviews/${id}`);
-        setName(response.data.name);
-        setPrice(response.data.price);
+        setTitle(response.data.title);
+        setProduct(response.data.product);
+        setGroup(response.data.group);
+        setTag(response.data.tag);
+        setText(response.data.text);
+        setRating(response.data.rating);
       } catch (error) {}
     };
     getReviewById();
@@ -31,10 +38,10 @@ const Review = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          {name}
+          {title}
         </Typography>
         <Typography component="h1" variant="h4">
-          {price}
+          {product}
         </Typography>
       </Box>
     </Container>

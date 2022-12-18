@@ -16,10 +16,9 @@ import {
 import { useTheme } from "@mui/material/styles";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import SearchIcon from "@mui/icons-material/Search";
 
-const Navbar = ({ onClick }) => {
+const Navbar = ({ onClick, Language }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -30,24 +29,12 @@ const Navbar = ({ onClick }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleGetUsers = () => {
-    navigate("/users");
-  };
-
-  const change = () => {
+  const handleChange = () => {
     navigate(`/users/edit/${user.uuid}`);
     setAnchorEl(null);
   };
 
-  const goReviews = () => {
-    navigate("/");
-  };
-
-  const profile = () => {
+  const handleProfile = () => {
     navigate(`/profile/${user.uuid}`);
     setAnchorEl(null);
   };
@@ -70,11 +57,16 @@ const Navbar = ({ onClick }) => {
             )}
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Button onClick={goReviews} color="inherit">
+            <Button onClick={() => navigate("/")} color="inherit">
               Reviews
             </Button>
+            {user !== null && (
+              <Button onClick={() => navigate("/reviews/add")} color="inherit">
+                Add Review
+              </Button>
+            )}
             {user !== null && user.role === "admin" && (
-              <Button onClick={handleGetUsers} color="inherit">
+              <Button onClick={() => navigate("/users")} color="inherit">
                 Users
               </Button>
             )}
@@ -94,8 +86,11 @@ const Navbar = ({ onClick }) => {
             </Button>
           )}
           {user && (
-            <div>
-              <IconButton
+            <Box display={"flex"}>
+              <Button color={"success"} align="center">
+                Rating {user.rating}
+              </Button>
+              <Button
                 size="large"
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
@@ -103,8 +98,8 @@ const Navbar = ({ onClick }) => {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <AccountCircle />
-              </IconButton>
+                {user.name}
+              </Button>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
@@ -118,13 +113,13 @@ const Navbar = ({ onClick }) => {
                   horizontal: "right",
                 }}
                 open={Boolean(anchorEl)}
-                onClose={handleClose}
+                onClose={() => setAnchorEl(null)}
               >
-                <MenuItem onClick={profile}>Profile</MenuItem>
-                <MenuItem onClick={change}>My account</MenuItem>
+                <MenuItem onClick={handleProfile}>Profile</MenuItem>
+                <MenuItem onClick={handleChange}>My account</MenuItem>
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
-            </div>
+            </Box>
           )}
         </Toolbar>
       </AppBar>

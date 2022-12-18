@@ -7,7 +7,6 @@ import Profile from "./pages/Profile";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import Users from "./pages/Users";
-import AddUser from "./pages/AddUser";
 import Reviews from "./pages/Reviews";
 import AddReview from "./pages/AddReview";
 import EditReview from "./pages/EditReview";
@@ -45,7 +44,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/reg" element={<Registration />} />
           <Route path="/users" element={<Users />} />
-          <Route path="/users/add" element={<AddUser />} />
           <Route path="/users/edit/:id" element={<EditUser />} />
           <Route path="/" element={<Reviews />} />
           <Route path="/reviews/:id" element={<Review />} />

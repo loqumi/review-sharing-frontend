@@ -8,12 +8,13 @@ import {
   Container,
   Box,
   Typography,
-  Card,
-  CardActions,
-  Button,
-  Grid,
-  CardContent,
+  Rating,
 } from "@mui/material/";
+import { GridActionsCellItem } from "@mui/x-data-grid-pro";
+import { DataGrid } from "@mui/x-data-grid";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Profile = () => {
   const [name, setName] = useState("");
@@ -45,10 +46,10 @@ const Profile = () => {
 
   const getReviews = React.useCallback(async () => {
     const response = await axios
-      .get("http://localhost:5000/reviews/")
+      .get(`http://localhost:5000/reviews/?userId=${id}`)
       .catch(login);
     setReviews(response.data);
-  }, [login]);
+  }, [id, login]);
 
   const deleteReview = async (reviewId) => {
     await axios
@@ -57,12 +58,62 @@ const Profile = () => {
     getReviews();
   };
 
+  function renderRating(params) {
+    return <Rating readOnly value={params.value / 2} precision={0.5} />;
+  }
+
+  const columns = [
+    { field: "title", headerName: "Title", width: 100 },
+    { field: "product", headerName: "Product", width: 130 },
+    { field: "group", headerName: "Group", width: 90 },
+    { field: "tag", headerName: "Tag", width: 130 },
+    { field: "text", headerName: "Text", width: 250 },
+    {
+      field: "rating",
+      headerName: "Rating",
+      renderCell: renderRating,
+      width: 150,
+      type: "number",
+    },
+    { field: "createdAt", headerName: "Created At", width: 130 },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "Actions",
+      width: 150,
+      cellClassName: "actions",
+      getActions: ({ row }) => {
+        return [
+          <GridActionsCellItem
+            icon={<VisibilityIcon />}
+            label="Delete"
+            onClick={() => navigate(`/reviews/${row.uuid}`)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={() => navigate(`/reviews/edit/${row.uuid}`)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={() => deleteReview(row.uuid)}
+            color="inherit"
+          />,
+        ];
+      },
+    },
+  ];
   useEffect(() => {
     getUserById();
     getReviews();
   }, [getReviews, getUserById, id]);
+
   return (
-    <Container component="main" maxWidth="md">
+    <Container component="main">
       <CssBaseline />
       <Box
         sx={{
@@ -76,59 +127,17 @@ const Profile = () => {
           {name}
         </Typography>
         <Typography component="h1" variant="h4">
-          {email}
-        </Typography>
-        <Typography component="h1" variant="h4">
           {role}
         </Typography>
-        <Grid container spacing={4} sx={{ marginTop: 0 }}>
-          {reviews.map((review) => (
-            <Grid item key={review.uuid} xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {review.user.name}
-                  </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe
-                    the content.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    onClick={() => {
-                      navigate(`/reviews/${review.uuid}`);
-                    }}
-                  >
-                    View
-                  </Button>
-                  <Button
-                    size="small"
-                    onClick={() => {
-                      navigate(`/reviews/edit/${review.uuid}`);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    size="small"
-                    color="error"
-                    onClick={() => deleteReview(review.uuid)}
-                  >
-                    Delete
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        {reviews.length !== 0 && (
+          <div style={{ height: 400, width: "100%" }}>
+            <DataGrid
+              rows={reviews}
+              columns={columns}
+              disableSelectionOnClick
+            />
+          </div>
+        )}
       </Box>
     </Container>
   );

@@ -75,19 +75,19 @@ const ReviewList = () => {
                 </Typography>
               </CardContent>
               <CardActions>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    navigate(`/reviews/${review.uuid}`);
+                  }}
+                >
+                  View
+                </Button>
                 {user !== null && (
                   <div>
                     {(review.user.name === user.name ||
                       user.role === "admin") && (
                       <div>
-                        <Button
-                          size="small"
-                          onClick={() => {
-                            navigate(`/reviews/${review.uuid}`);
-                          }}
-                        >
-                          View
-                        </Button>
                         <Button
                           size="small"
                           onClick={() => {
