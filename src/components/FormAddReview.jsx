@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,13 +14,16 @@ import {
   Select,
   FormControl,
   Rating,
+  Autocomplete,
+  Chip,
 } from "@mui/material/";
 
 const FormAddReview = () => {
   const [title, setTitle] = useState("");
   const [product, setProduct] = useState("");
   const [group, setGroup] = useState("");
-  const [tag, setTag] = useState("");
+  const [tags, setTags] = useState([]);
+  const [value, setValue] = useState([]);
   const [text, setText] = useState("");
   const [rating, setRating] = useState("");
   const [msg, setMsg] = useState("");
@@ -33,17 +36,36 @@ const FormAddReview = () => {
         title,
         product,
         group,
-        tag,
+        tag: value,
         text,
         rating,
       });
-      navigate("/");
+      await axios
+        .post("http://localhost:5000/tags", {
+          tag: value,
+        })
+        .then(navigate("/"));
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);
       }
     }
   };
+
+  const getTags = React.useCallback(async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/tags");
+      setTags(response.data);
+    } catch (error) {}
+  }, []);
+
+  const handleChange = (e, value) => {
+    setValue(value);
+  };
+
+  useEffect(() => {
+    getTags();
+  }, [getTags]);
 
   return (
     <Container component="main" maxWidth="md">
@@ -107,15 +129,29 @@ const FormAddReview = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="text"
-                label="Text"
-                id="text"
-                placeholder="Body text"
-                value={tag}
-                onChange={(e) => setTag(e.target.value)}
+              <Autocomplete
+                multiple
+                id="tags-filled"
+                options={tags.map((tag) => tag.title)}
+                value={value}
+                onChange={handleChange}
+                freeSolo
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip
+                      variant="outlined"
+                      label={option}
+                      {...getTagProps({ index })}
+                    />
+                  ))
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Tags"
+                    placeholder="Write tags"
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12}>

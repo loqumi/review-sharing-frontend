@@ -18,7 +18,6 @@ import EditIcon from "@mui/icons-material/Edit";
 
 const Profile = () => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [reviews, setReviews] = useState([]);
   const { id } = useParams();
@@ -39,7 +38,6 @@ const Profile = () => {
     try {
       const response = await axios.get(`http://localhost:5000/users/${id}`);
       setName(response.data.name);
-      setEmail(response.data.email);
       setRole(response.data.role);
     } catch (error) {}
   }, [id]);

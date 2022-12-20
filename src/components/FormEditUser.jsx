@@ -32,7 +32,7 @@ const FormEditUser = () => {
       try {
         const response = await axios.get(`http://localhost:5000/users/${id}`);
         setName(response.data.name);
-        setEmail(response.data.email);
+        setEmail(!response.data.email ? "" : response.data.email);
         setRole(response.data.role);
       } catch (error) {
         if (error.response) {

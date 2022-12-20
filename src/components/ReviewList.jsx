@@ -12,9 +12,11 @@ import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { Autocomplete, Chip, TextField } from "@mui/material";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
+  const [tags, setTags] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,9 +39,17 @@ const ReviewList = () => {
     setReviews(response.data);
   }, [login]);
 
+  const getTags = React.useCallback(async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/tags");
+      setTags(response.data);
+    } catch (error) {}
+  }, []);
+
   useEffect(() => {
     getReviews();
-  }, [getReviews]);
+    getTags();
+  }, [getReviews, getTags]);
 
   const deleteReview = async (reviewId) => {
     await axios
@@ -48,8 +58,26 @@ const ReviewList = () => {
     getReviews();
   };
   return (
-    <Container sx={{ py: 8 }} component="main" maxWidth="md">
+    <Container sx={{ py: 9 }} component="main">
       <CssBaseline />
+      <Autocomplete
+        multiple
+        id="tags-filled"
+        options={tags}
+        value={tags.map((tag) => tag.title)}
+        freeSolo
+        disabled
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip
+              variant="outlined"
+              label={option}
+              {...getTagProps({ index })}
+            />
+          ))
+        }
+        renderInput={(params) => <TextField {...params} />}
+      ></Autocomplete>
       <Grid container spacing={4} sx={{ marginTop: 0 }}>
         {reviews.map((review) => (
           <Grid item key={review.uuid} xs={12} sm={6} md={4}>
