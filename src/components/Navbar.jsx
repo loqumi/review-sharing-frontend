@@ -88,6 +88,7 @@ const Navbar = ({ onClick }) => {
   const logout = () => {
     dispatch(LogOut());
     dispatch(reset());
+    setOpen(false);
     navigate("/login");
   };
 
@@ -187,17 +188,19 @@ const Navbar = ({ onClick }) => {
                     Reviews
                   </ListItemButton>
                 </ListItem>
-                <ListItem onClick={handleAddReview}>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <RateReviewIcon />
-                    </ListItemIcon>
-                    Add Review
-                  </ListItemButton>
-                </ListItem>
               </List>
               {user && (
                 <div>
+                  <List>
+                    <ListItem onClick={handleAddReview}>
+                      <ListItemButton>
+                        <ListItemIcon>
+                          <RateReviewIcon />
+                        </ListItemIcon>
+                        Add Review
+                      </ListItemButton>
+                    </ListItem>
+                  </List>
                   <Divider />
                   <List>
                     <ListItem onClick={logout}>
@@ -219,12 +222,14 @@ const Navbar = ({ onClick }) => {
                 <Button onClick={() => navigate("/")} color="inherit">
                   Reviews
                 </Button>
-                <Button
-                  onClick={() => navigate("/reviews/add")}
-                  color="inherit"
-                >
-                  Add Review
-                </Button>
+                {user && (
+                  <Button
+                    onClick={() => navigate("/reviews/add")}
+                    color="inherit"
+                  >
+                    Add Review
+                  </Button>
+                )}
                 {user !== null && user.role === "admin" && (
                   <Button onClick={() => navigate("/users")} color="inherit">
                     Users

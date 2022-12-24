@@ -209,10 +209,7 @@ const Userlist = () => {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell align="center">
-                  <Checkbox
-                    checked={selectedUsers.includes(user.uuid)}
-                    onChange={() => handleSelectUser(user.uuid)}
-                  />
+                  <Checkbox checked={selectedUsers.includes(user.uuid)} />
                 </TableCell>
                 <TableCell component="th" scope="row" align="right">
                   <Button

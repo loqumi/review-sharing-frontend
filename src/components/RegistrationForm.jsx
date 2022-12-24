@@ -29,7 +29,7 @@ const RegistrationForm = () => {
         password,
         confPassword,
       });
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       if (error.response) {
         setMsg(error.response.data.msg);

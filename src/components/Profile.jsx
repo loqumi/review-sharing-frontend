@@ -59,12 +59,20 @@ const Profile = () => {
   function renderRating(params) {
     return <Rating readOnly value={params.value / 2} precision={0.5} />;
   }
+  function renderTags(params) {
+    return `${JSON.parse(params.value)}`;
+  }
 
   const columns = [
     { field: "title", headerName: "Title", width: 100 },
     { field: "product", headerName: "Product", width: 130 },
     { field: "group", headerName: "Group", width: 90 },
-    { field: "tag", headerName: "Tag", width: 130 },
+    {
+      field: "tag",
+      headerName: "Tag",
+      width: 130,
+      renderCell: renderTags,
+    },
     { field: "text", headerName: "Text", width: 250 },
     {
       field: "rating",

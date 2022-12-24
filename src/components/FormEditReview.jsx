@@ -66,7 +66,7 @@ const FormEditReview = () => {
       }
     }
   };
-  console.log(value);
+
   const getTags = React.useCallback(async () => {
     try {
       const response = await axios.get("http://localhost:5000/tags");
