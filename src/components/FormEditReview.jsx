@@ -26,7 +26,6 @@ const FormEditReview = () => {
   const [value, setValue] = useState([]);
   const [text, setText] = useState("");
   const [rating, setRating] = useState("");
-  const [msg, setMsg] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
@@ -39,11 +38,7 @@ const FormEditReview = () => {
         setValue(response.data.tag.split(symbol));
         setText(response.data.text);
         setRating(response.data.rating);
-      } catch (error) {
-        if (error.response) {
-          setMsg(error.response.data.msg);
-        }
-      }
+      } catch (error) {}
     };
     getReviewById();
   }, [id]);
@@ -60,11 +55,7 @@ const FormEditReview = () => {
         rating,
       });
       navigate("/");
-    } catch (error) {
-      if (error.response) {
-        setMsg(error.response.data.msg);
-      }
-    }
+    } catch (error) {}
   };
 
   const getTags = React.useCallback(async () => {
@@ -98,9 +89,6 @@ const FormEditReview = () => {
         </Typography>
         <Box component="form" onSubmit={updateReview} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Typography color="error" sx={{ m: "auto" }}>
-              {msg}
-            </Typography>
             <Grid item xs={6}>
               <TextField
                 required

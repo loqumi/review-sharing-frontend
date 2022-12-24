@@ -24,6 +24,7 @@ const Review = () => {
   const [rating, setRating] = useState("");
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
+  const [userName, setUserName] = useState("");
   const [reviewId, setReviewId] = useState("");
   const [liked, setLiked] = useState([]);
   const { id } = useParams();
@@ -34,7 +35,8 @@ const Review = () => {
       setTitle(response.data.title);
       setProduct(response.data.product);
       setGroup(response.data.group);
-      setTag(JSON.parse(response.data.tag));
+      setUserName(response.data.user.name);
+      setTag(JSON.parse(response.data.tag).map((review) => review + " "));
       setText(response.data.text);
       setRating(response.data.rating);
       setReviewId(response.data.id);
@@ -100,6 +102,9 @@ const Review = () => {
           alignItems: "center",
         }}
       >
+        <Typography component="h1" variant="h4">
+          Author {userName}
+        </Typography>
         <Typography component="h1" variant="h4">
           {title}
         </Typography>

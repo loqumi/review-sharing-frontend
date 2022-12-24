@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Users from "./pages/Users";
 import Reviews from "./pages/Reviews";
 import AddReview from "./pages/AddReview";
+import AddReviewID from "./pages/AddReviewID";
 import EditReview from "./pages/EditReview";
 import EditUser from "./pages/EditUser";
 import Review from "./pages/Review";
@@ -48,6 +49,7 @@ function App() {
           <Route path="/" element={<Reviews />} />
           <Route path="/reviews/:id" element={<Review />} />
           <Route path="/reviews/add" element={<AddReview />} />
+          <Route path="/reviews/add/:id" element={<AddReviewID />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

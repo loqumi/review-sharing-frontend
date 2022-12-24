@@ -17,7 +17,6 @@ const RegistrationForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
   const saveUser = async (e) => {
@@ -30,11 +29,7 @@ const RegistrationForm = () => {
         confPassword,
       });
       navigate("/login");
-    } catch (error) {
-      if (error.response) {
-        setMsg(error.response.data.msg);
-      }
-    }
+    } catch (error) {}
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -52,9 +47,6 @@ const RegistrationForm = () => {
         </Typography>
         <Box component="form" onSubmit={saveUser} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Typography color="error" sx={{ m: "auto" }}>
-              {msg}
-            </Typography>
             <Grid item xs={12}>
               <TextField
                 required

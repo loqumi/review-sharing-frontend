@@ -22,7 +22,6 @@ const FormEditUser = () => {
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
   const [role, setRole] = useState("");
-  const [msg, setMsg] = useState("");
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const { id } = useParams();
@@ -34,11 +33,7 @@ const FormEditUser = () => {
         setName(response.data.name);
         setEmail(!response.data.email ? "" : response.data.email);
         setRole(response.data.role);
-      } catch (error) {
-        if (error.response) {
-          setMsg(error.response.data.msg);
-        }
-      }
+      } catch (error) {}
     };
     getUserById();
   }, [id]);
@@ -55,11 +50,7 @@ const FormEditUser = () => {
       });
       navigate("/");
       navigate(0);
-    } catch (error) {
-      if (error.response) {
-        setMsg(error.response.data.msg);
-      }
-    }
+    } catch (error) {}
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -77,9 +68,6 @@ const FormEditUser = () => {
         </Typography>
         <Box component="form" onSubmit={updateUser} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            <Typography color="error" sx={{ m: "auto" }}>
-              {msg}
-            </Typography>
             <Grid item xs={12}>
               <TextField
                 required

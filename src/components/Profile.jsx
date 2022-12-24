@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { reset } from "../features/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CssBaseline,
   Container,
   Box,
   Typography,
   Rating,
+  Button,
 } from "@mui/material/";
 import { GridActionsCellItem } from "@mui/x-data-grid-pro";
 import { DataGrid } from "@mui/x-data-grid";
@@ -20,6 +21,7 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [reviews, setReviews] = useState([]);
+  const { user } = useSelector((state) => state.auth);
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -54,6 +56,10 @@ const Profile = () => {
       .delete(`http://localhost:5000/reviews/${reviewId}`)
       .catch(login);
     getReviews();
+  };
+
+  const createReview = (id) => {
+    navigate(`/reviews/add/${id}`);
   };
 
   function renderRating(params) {
@@ -113,6 +119,7 @@ const Profile = () => {
       },
     },
   ];
+
   useEffect(() => {
     getUserById();
     getReviews();
@@ -135,6 +142,11 @@ const Profile = () => {
         <Typography component="h1" variant="h4">
           {role}
         </Typography>
+        {user !== null && user.role === "admin" && (
+          <Button color="inherit" onClick={() => createReview(id)}>
+            Add review by user
+          </Button>
+        )}
         {reviews.length !== 0 && (
           <div style={{ height: 400, width: "100%" }}>
             <DataGrid

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
+import axios from "axios";
 import {
   AppBar,
   TextField,
@@ -33,13 +34,23 @@ import ReviewsIcon from "@mui/icons-material/Reviews";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 
 const Navbar = ({ onClick }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [likes, setLikes] = useState("");
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
   const drawerWidth = 240;
+
+  const getUserLikes = React.useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/user/rating/?userId=${user.uuid}`
+      );
+      setLikes(response.data);
+    } catch (error) {}
+  }, [user]);
 
   const isMobile = useMediaQuery({
     query: "(max-width: 786px)",
@@ -99,6 +110,10 @@ const Navbar = ({ onClick }) => {
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
   }));
+
+  useEffect(() => {
+    getUserLikes();
+  }, [getUserLikes]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -258,7 +273,7 @@ const Navbar = ({ onClick }) => {
             {user && (
               <Box display={"flex"}>
                 <Button color={"success"} align="center">
-                  Rating {user.rating}
+                  Rating {likes}
                 </Button>
                 {!isMobile && (
                   <div>

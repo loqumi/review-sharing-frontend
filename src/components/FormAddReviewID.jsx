@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   CssBaseline,
@@ -18,7 +18,7 @@ import {
   Chip,
 } from "@mui/material/";
 
-const FormAddReview = () => {
+const FormAddReviewID = () => {
   const [title, setTitle] = useState("");
   const [product, setProduct] = useState("");
   const [group, setGroup] = useState("");
@@ -26,12 +26,13 @@ const FormAddReview = () => {
   const [value, setValue] = useState([]);
   const [text, setText] = useState("");
   const [rating, setRating] = useState("");
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const saveReview = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/reviews/", {
+      await axios.post(`http://localhost:5000/reviews/add/${id}`, {
         title,
         product,
         group,
@@ -188,4 +189,4 @@ const FormAddReview = () => {
   );
 };
 
-export default FormAddReview;
+export default FormAddReviewID;
