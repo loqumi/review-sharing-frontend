@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDropzone } from "react-dropzone";
+import { storage } from "../firebase";
 import {
   Button,
   CssBaseline,
@@ -8,6 +10,7 @@ import {
   Grid,
   Box,
   Typography,
+  IconButton,
   Container,
   InputLabel,
   MenuItem,
@@ -17,6 +20,8 @@ import {
   Autocomplete,
   Chip,
 } from "@mui/material/";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 const FormAddReviewID = () => {
   const [title, setTitle] = useState("");
@@ -26,6 +31,8 @@ const FormAddReviewID = () => {
   const [value, setValue] = useState([]);
   const [text, setText] = useState("");
   const [rating, setRating] = useState("");
+  const [titleImage, setTitleImage] = useState();
+  const [process, setProcess] = useState(0);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -33,6 +40,7 @@ const FormAddReviewID = () => {
     e.preventDefault();
     try {
       await axios.post(`http://localhost:5000/reviews/add/${id}`, {
+        titleImage,
         title,
         product,
         group,
@@ -48,6 +56,33 @@ const FormAddReviewID = () => {
     } catch (error) {}
   };
 
+  const handleUpload = useCallback((e) => {
+    const file = e.target.files[0];
+    uploadFiles(file);
+  }, []);
+
+  const uploadFiles = (file) => {
+    if (!file) return;
+    const storageRef = ref(storage, `/files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProcess(prog);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) =>
+          setTitleImage(url)
+        );
+      }
+    );
+  };
+
   const getTags = React.useCallback(async () => {
     try {
       const response = await axios.get("http://localhost:5000/tags");
@@ -58,6 +93,15 @@ const FormAddReviewID = () => {
   const handleChange = (e, value) => {
     setValue(value);
   };
+
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      handleUpload(acceptedFiles);
+    },
+    [handleUpload]
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   useEffect(() => {
     getTags();
@@ -79,6 +123,25 @@ const FormAddReviewID = () => {
         </Typography>
         <Box component="form" onSubmit={saveReview} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
+            <Grid item xs={12} display={"flex"} justifyContent="center">
+              <Box {...getRootProps()}>
+                <input {...getInputProps()} onDrop={handleUpload} />
+                <p>
+                  Drag 'n' drop some files here, or click to select files to
+                  preview of your review
+                </p>
+              </Box>
+              {process === 100 && (
+                <IconButton
+                  color="success"
+                  aria-label="upload picture"
+                  component="label"
+                  readOnly
+                >
+                  <CheckCircleIcon />
+                </IconButton>
+              )}
+            </Grid>
             <Grid item xs={6}>
               <TextField
                 required

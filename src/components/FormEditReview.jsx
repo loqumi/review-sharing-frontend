@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDropzone } from "react-dropzone";
+import { storage } from "../firebase";
 import {
   Button,
   CssBaseline,
@@ -10,6 +12,7 @@ import {
   Typography,
   Container,
   InputLabel,
+  IconButton,
   MenuItem,
   Select,
   FormControl,
@@ -17,7 +20,9 @@ import {
   Autocomplete,
   Chip,
 } from "@mui/material/";
-const symbol = "---dhsjk-dashds---";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+
 const FormEditReview = () => {
   const [title, setTitle] = useState("");
   const [product, setProduct] = useState("");
@@ -26,8 +31,11 @@ const FormEditReview = () => {
   const [value, setValue] = useState([]);
   const [text, setText] = useState("");
   const [rating, setRating] = useState("");
+  const [titleImage, setTitleImage] = useState();
+  const [process, setProcess] = useState(0);
   const { id } = useParams();
   const navigate = useNavigate();
+
   useEffect(() => {
     const getReviewById = async () => {
       try {
@@ -35,7 +43,7 @@ const FormEditReview = () => {
         setTitle(response.data.title);
         setProduct(response.data.product);
         setGroup(response.data.group);
-        setValue(response.data.tag.split(symbol));
+        setValue(JSON.parse(response.data.tag));
         setText(response.data.text);
         setRating(response.data.rating);
       } catch (error) {}
@@ -47,14 +55,19 @@ const FormEditReview = () => {
     e.preventDefault();
     try {
       await axios.post(`http://localhost:5000/reviews/${id}`, {
+        titleImage,
         title,
         product,
         group,
-        tags,
+        tag: value,
         text,
         rating,
       });
-      navigate("/");
+      await axios
+        .post("http://localhost:5000/tags", {
+          tag: value,
+        })
+        .then(navigate("/"));
     } catch (error) {}
   };
 
@@ -68,6 +81,42 @@ const FormEditReview = () => {
   const handleChange = (e, value) => {
     setValue(value);
   };
+
+  const handleUpload = useCallback((e) => {
+    const file = e.target.files[0];
+    uploadFiles(file);
+  }, []);
+
+  const uploadFiles = (file) => {
+    if (!file) return;
+    const storageRef = ref(storage, `/files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProcess(prog);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) =>
+          setTitleImage(url)
+        );
+      }
+    );
+  };
+
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      handleUpload(acceptedFiles);
+    },
+    [handleUpload]
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   useEffect(() => {
     getTags();
@@ -89,6 +138,25 @@ const FormEditReview = () => {
         </Typography>
         <Box component="form" onSubmit={updateReview} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
+            <Grid item xs={12} display={"flex"} justifyContent="center">
+              <Box {...getRootProps()}>
+                <input {...getInputProps()} onDrop={handleUpload} />
+                <p>
+                  Drag 'n' drop some files here, or click to select files to
+                  preview of your review
+                </p>
+              </Box>
+              {process === 100 && (
+                <IconButton
+                  color="success"
+                  aria-label="upload picture"
+                  component="label"
+                  readOnly
+                >
+                  <CheckCircleIcon />
+                </IconButton>
+              )}
+            </Grid>
             <Grid item xs={6}>
               <TextField
                 required

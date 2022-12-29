@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 import {
   CssBaseline,
   Container,
@@ -16,31 +17,36 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const Review = () => {
   const { user } = useSelector((state) => state.auth);
-  const [title, setTitle] = useState("");
-  const [product, setProduct] = useState("");
-  const [group, setGroup] = useState("");
+  const [username, setUsername] = useState("");
+  const [review, setReview] = useState("");
   const [tag, setTag] = useState("");
-  const [text, setText] = useState("");
-  const [rating, setRating] = useState("");
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
-  const [userName, setUserName] = useState("");
-  const [reviewId, setReviewId] = useState("");
+  const [rating, setRating] = useState(0);
+  const [commonRating, setCommonRating] = useState([]);
   const [liked, setLiked] = useState([]);
+  const [likes, setLikes] = useState("");
+
   const { id } = useParams();
 
   const getReviewById = React.useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:5000/reviews/${id}`);
-      setTitle(response.data.title);
-      setProduct(response.data.product);
-      setGroup(response.data.group);
-      setUserName(response.data.user.name);
+      setReview(response.data);
+      setUsername(response.data.user.name);
       setTag(JSON.parse(response.data.tag).map((review) => review + " "));
-      setText(response.data.text);
-      setRating(response.data.rating);
-      setReviewId(response.data.id);
       setLiked(JSON.parse(response.data.liked));
+      setRating(JSON.parse(response.data.productRating)[user?.uuid]);
+      setCommonRating(Object.values(JSON.parse(response.data.productRating)));
+    } catch (error) {}
+  }, [id, user?.uuid]);
+
+  const getUserLikes = React.useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/user/rating/?reviewId=${id}`
+      );
+      setLikes(response.data);
     } catch (error) {}
   }, [id]);
 
@@ -62,13 +68,24 @@ const Review = () => {
     } catch (error) {}
   };
 
+  const sendRating = async (rating) => {
+    if (!rating) return;
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/reviews/product/rating/${id}`,
+        { rating }
+      );
+      setRating(response.data[user?.uuid]);
+    } catch (error) {}
+  };
+
   const sendComment = async (e) => {
     e.preventDefault();
     try {
       await axios
         .post("http://localhost:5000/comments", {
           comment,
-          reviewId: reviewId,
+          reviewId: review.id,
         })
         .then((res) => setComments((prev) => [...prev, res.data]));
     } catch (error) {}
@@ -82,14 +99,15 @@ const Review = () => {
         );
         setComments(res.data);
       })();
-    }, 5000);
+    }, 445000);
     return () => clearInterval(interval);
   }, [id]);
 
   useEffect(() => {
     getReviewById();
     getComments();
-  }, [getComments, getReviewById]);
+    getUserLikes();
+  }, [getComments, getReviewById, getUserLikes]);
 
   return (
     <Container component="main" xs={"xl"}>
@@ -103,24 +121,28 @@ const Review = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          Author {userName}
+          Author {username} rating {likes}
         </Typography>
         <Typography component="h1" variant="h4">
-          {title}
+          {review.title}
         </Typography>
+        {commonRating.length > 0 && (
+          <Typography component="h1" variant="h4">
+            {review.product} user rating{" "}
+            {commonRating.reduce((a, b) => Number(a) + Number(b)) /
+              commonRating.length}
+          </Typography>
+        )}
         <Typography component="h1" variant="h4">
-          {product}
-        </Typography>
-        <Typography component="h1" variant="h4">
-          {group}
+          {review.group}
         </Typography>
         <Typography component="h1" variant="h4">
           {tag}
         </Typography>
         <Typography component="h1" variant="h4">
-          {text}
+          <ReactMarkdown>{review.text}</ReactMarkdown>
         </Typography>
-        <Rating value={Number(rating)} readOnly max={10} size="large" />
+        <Rating value={Number(review.rating)} readOnly max={10} size="large" />
         <IconButton onClick={setLike}>
           <FavoriteIcon />
         </IconButton>
@@ -130,6 +152,11 @@ const Review = () => {
         {user && (
           <Box component="form" onSubmit={sendComment} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
+              <Rating
+                onClick={(e) => sendRating(e.target.value)}
+                size="large"
+                value={Number(rating)}
+              />
               <Grid item xs={12}>
                 <TextField
                   name="comment"

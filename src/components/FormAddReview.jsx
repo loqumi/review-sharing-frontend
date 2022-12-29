@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { storage } from "../firebase";
+import { useDropzone } from "react-dropzone";
 import {
   Button,
   CssBaseline,
@@ -10,6 +12,7 @@ import {
   Typography,
   Container,
   InputLabel,
+  IconButton,
   MenuItem,
   Select,
   FormControl,
@@ -17,6 +20,8 @@ import {
   Autocomplete,
   Chip,
 } from "@mui/material/";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 const FormAddReview = () => {
   const [title, setTitle] = useState("");
@@ -26,12 +31,15 @@ const FormAddReview = () => {
   const [value, setValue] = useState([]);
   const [text, setText] = useState("");
   const [rating, setRating] = useState("");
+  const [titleImage, setTitleImage] = useState();
+  const [process, setProcess] = useState(0);
   const navigate = useNavigate();
 
   const saveReview = async (e) => {
     e.preventDefault();
     try {
       await axios.post("http://localhost:5000/reviews/", {
+        titleImage,
         title,
         product,
         group,
@@ -58,6 +66,42 @@ const FormAddReview = () => {
     setValue(value);
   };
 
+  const handleUpload = useCallback((droppedFile) => {
+    const file = droppedFile[0];
+    uploadFiles(file);
+  }, []);
+
+  const uploadFiles = (file) => {
+    if (!file) return;
+    const storageRef = ref(storage, `/files/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const prog = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProcess(prog);
+      },
+      (err) => console.log(err),
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((url) =>
+          setTitleImage(url)
+        );
+      }
+    );
+  };
+
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      handleUpload(acceptedFiles);
+    },
+    [handleUpload]
+  );
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
   useEffect(() => {
     getTags();
   }, [getTags]);
@@ -73,11 +117,30 @@ const FormAddReview = () => {
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h3">
           New Review Deploy
         </Typography>
         <Box component="form" onSubmit={saveReview} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
+            <Grid item xs={12} display={"flex"} justifyContent="center">
+              <Box {...getRootProps()}>
+                <input {...getInputProps()} onDrop={handleUpload} />
+                <p>
+                  Drag 'n' drop some files here, or click to select files to
+                  preview of your review
+                </p>
+              </Box>
+              {process === 100 && (
+                <IconButton
+                  color="success"
+                  aria-label="upload picture"
+                  component="label"
+                  readOnly
+                >
+                  <CheckCircleIcon />
+                </IconButton>
+              )}
+            </Grid>
             <Grid item xs={6}>
               <TextField
                 required

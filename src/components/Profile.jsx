@@ -21,11 +21,11 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [reviews, setReviews] = useState([]);
+  const [likes, setLikes] = useState(0);
   const { user } = useSelector((state) => state.auth);
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const logout = React.useCallback(() => {
     dispatch(reset());
     navigate("/");
@@ -35,6 +35,15 @@ const Profile = () => {
     (error) => error.response.status === 401 && logout(),
     [logout]
   );
+
+  const getUserLikes = React.useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/user/rating/?userId=${id}`
+      );
+      setLikes(response.data);
+    } catch (error) {}
+  }, [id]);
 
   const getUserById = React.useCallback(async () => {
     try {
@@ -123,7 +132,8 @@ const Profile = () => {
   useEffect(() => {
     getUserById();
     getReviews();
-  }, [getReviews, getUserById, id]);
+    getUserLikes();
+  }, [getReviews, getUserById, getUserLikes, id]);
 
   return (
     <Container component="main">
@@ -137,7 +147,7 @@ const Profile = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          {name}
+          {name} rating {likes}
         </Typography>
         <Typography component="h1" variant="h4">
           {role}
@@ -147,7 +157,7 @@ const Profile = () => {
             Add review by user
           </Button>
         )}
-        {reviews.length !== 0 && (
+        {reviews?.length !== 0 && (
           <div style={{ height: 400, width: "100%" }}>
             <DataGrid
               rows={reviews}

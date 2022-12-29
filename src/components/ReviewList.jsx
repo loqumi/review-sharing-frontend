@@ -110,12 +110,22 @@ const ReviewList = () => {
                 >
                   <CardMedia
                     component="img"
-                    image="https://source.unsplash.com/random"
-                    alt="random"
+                    image={review.titleImage}
+                    alt="titleImage"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {review.title}
+                      {review.title}{" "}
+                      {Object.values(JSON.parse(review.productRating)).length >
+                        0 && (
+                        <div>
+                          {Object.values(
+                            JSON.parse(review.productRating)
+                          ).reduce((a, b) => Number(a) + Number(b)) /
+                            Object.values(JSON.parse(review.productRating))
+                              .length}
+                        </div>
+                      )}
                     </Typography>
                     <Typography>{review.group}</Typography>
                     <Typography>
@@ -150,12 +160,22 @@ const ReviewList = () => {
                 >
                   <CardMedia
                     component="img"
-                    image="https://source.unsplash.com/random"
-                    alt="random"
+                    image={review.titleImage}
+                    alt="titleImage"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {review.title}
+                      {Object.values(JSON.parse(review.productRating)).length >
+                        0 && (
+                        <div>
+                          {Object.values(
+                            JSON.parse(review.productRating)
+                          ).reduce((a, b) => Number(a) + Number(b)) /
+                            Object.values(JSON.parse(review.productRating))
+                              .length}
+                        </div>
+                      )}
                     </Typography>
                     <Typography>{review.group}</Typography>
                     <Typography>
@@ -190,12 +210,22 @@ const ReviewList = () => {
                 >
                   <CardMedia
                     component="img"
-                    image="https://source.unsplash.com/random"
-                    alt="random"
+                    image={review.titleImage}
+                    alt="titleImage"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {review.title}
+                      {review.title}{" "}
+                      {Object.values(JSON.parse(review.productRating)).length >
+                        0 && (
+                        <div>
+                          {Object.values(
+                            JSON.parse(review.productRating)
+                          ).reduce((a, b) => Number(a) + Number(b)) /
+                            Object.values(JSON.parse(review.productRating))
+                              .length}
+                        </div>
+                      )}
                     </Typography>
                     <Typography>{review.group}</Typography>
                     <Typography>

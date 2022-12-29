@@ -36,7 +36,7 @@ import RateReviewIcon from "@mui/icons-material/RateReview";
 const Navbar = ({ onClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
-  const [likes, setLikes] = useState("");
+  const [likes, setLikes] = useState(0);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
