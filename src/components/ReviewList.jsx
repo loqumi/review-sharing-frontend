@@ -13,8 +13,14 @@ import {
   Grid,
   Typography,
   Container,
+  Rating,
 } from "@mui/material/";
+import TagIcon from "@mui/icons-material/Tag";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { Autocomplete, Chip, TextField } from "@mui/material";
+import { intl } from "../utils/intl";
+import { INTL } from "../constants/intl";
 
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
@@ -77,7 +83,7 @@ const ReviewList = () => {
       {reviews.length !== 0 && (
         <div>
           <Typography variant="h3" sx={{ mb: 2 }}>
-            Used tags
+            {intl(INTL.REVIEWS_LIST.USED_TAGS)}
           </Typography>
           <Autocomplete
             multiple
@@ -97,7 +103,9 @@ const ReviewList = () => {
             }
             renderInput={(params) => <TextField {...params} />}
           ></Autocomplete>
-          <Typography variant="h2">Popular Reviews</Typography>
+          <Typography variant="h2">
+            {intl(INTL.REVIEWS_LIST.POPULAR)}
+          </Typography>
           <Grid container spacing={4} sx={{ marginTop: 0 }}>
             {popularReviews.map((review) => (
               <Grid item key={review.uuid} xs={12} sm={6} md={4}>
@@ -115,23 +123,33 @@ const ReviewList = () => {
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {review.title}{" "}
-                      {Object.values(JSON.parse(review.productRating)).length >
-                        0 && (
-                        <div>
-                          {Object.values(
+                      {review.title}
+                    </Typography>
+                    {Object.values(JSON.parse(review.productRating)).length ===
+                      0 && <Rating readOnly value={0} />}
+                    {Object.values(JSON.parse(review.productRating)) > 0 && (
+                      <Rating
+                        readOnly
+                        value={
+                          Object.values(
                             JSON.parse(review.productRating)
                           ).reduce((a, b) => Number(a) + Number(b)) /
-                            Object.values(JSON.parse(review.productRating))
-                              .length}
-                        </div>
-                      )}
+                          Object.values(JSON.parse(review.productRating)).length
+                        }
+                      />
+                    )}
+                    <Typography display={"flex"}>
+                      <BookmarkIcon />
+                      {review.group}
                     </Typography>
-                    <Typography>{review.group}</Typography>
-                    <Typography>
+                    <Typography display={"flex"}>
+                      <TagIcon />
                       {JSON.parse(review.tag).map((review) => review + " ")}
                     </Typography>
-                    <Typography>{JSON.parse(review.liked).length}</Typography>
+                    <Typography display={"flex"}>
+                      <FavoriteBorderIcon />
+                      {JSON.parse(review.liked).length}
+                    </Typography>
                   </CardContent>
                   <CardActions>
                     <Button
@@ -140,14 +158,17 @@ const ReviewList = () => {
                         navigate(`/reviews/${review.uuid}`);
                       }}
                     >
-                      View
+                      {intl(INTL.REVIEWS_LIST.VIEW)}
                     </Button>
                   </CardActions>
                 </Card>
               </Grid>
             ))}
           </Grid>
-          <Typography variant="h2">Recently Reviews</Typography>
+          <Typography variant="h2">
+            {" "}
+            {intl(INTL.REVIEWS_LIST.RECENTLY)}
+          </Typography>
           <Grid container spacing={4} sx={{ marginTop: 0 }}>
             {recentlyReviews.map((review) => (
               <Grid item key={review.uuid} xs={12} sm={6} md={4}>
@@ -166,22 +187,32 @@ const ReviewList = () => {
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {review.title}
-                      {Object.values(JSON.parse(review.productRating)).length >
-                        0 && (
-                        <div>
-                          {Object.values(
+                    </Typography>
+                    {Object.values(JSON.parse(review.productRating)).length ===
+                      0 && <Rating readOnly value={0} />}
+                    {Object.values(JSON.parse(review.productRating)) > 0 && (
+                      <Rating
+                        readOnly
+                        value={
+                          Object.values(
                             JSON.parse(review.productRating)
                           ).reduce((a, b) => Number(a) + Number(b)) /
-                            Object.values(JSON.parse(review.productRating))
-                              .length}
-                        </div>
-                      )}
+                          Object.values(JSON.parse(review.productRating)).length
+                        }
+                      />
+                    )}
+                    <Typography display={"flex"}>
+                      <BookmarkIcon />
+                      {review.group}
                     </Typography>
-                    <Typography>{review.group}</Typography>
-                    <Typography>
+                    <Typography display={"flex"}>
+                      <TagIcon />
                       {JSON.parse(review.tag).map((review) => review + " ")}
                     </Typography>
-                    <Typography>{JSON.parse(review.liked).length}</Typography>
+                    <Typography display={"flex"}>
+                      <FavoriteBorderIcon />
+                      {JSON.parse(review.liked).length}
+                    </Typography>
                   </CardContent>
                   <CardActions>
                     <Button
@@ -190,14 +221,14 @@ const ReviewList = () => {
                         navigate(`/reviews/${review.uuid}`);
                       }}
                     >
-                      View
+                      {intl(INTL.REVIEWS_LIST.VIEW)}
                     </Button>
                   </CardActions>
                 </Card>
               </Grid>
             ))}
           </Grid>
-          <Typography variant="h2">All Reviews</Typography>
+          <Typography variant="h2"> {intl(INTL.REVIEWS_LIST.ALL)}</Typography>
           <Grid container spacing={4} sx={{ marginTop: 0 }}>
             {reviews.map((review) => (
               <Grid item key={review.uuid} xs={12} sm={6} md={4}>
@@ -216,22 +247,32 @@ const ReviewList = () => {
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {review.title}{" "}
-                      {Object.values(JSON.parse(review.productRating)).length >
-                        0 && (
-                        <div>
-                          {Object.values(
+                    </Typography>
+                    {Object.values(JSON.parse(review.productRating)).length ===
+                      0 && <Rating readOnly value={0} />}
+                    {Object.values(JSON.parse(review.productRating)) > 0 && (
+                      <Rating
+                        readOnly
+                        value={
+                          Object.values(
                             JSON.parse(review.productRating)
                           ).reduce((a, b) => Number(a) + Number(b)) /
-                            Object.values(JSON.parse(review.productRating))
-                              .length}
-                        </div>
-                      )}
+                          Object.values(JSON.parse(review.productRating)).length
+                        }
+                      />
+                    )}
+                    <Typography display={"flex"}>
+                      <BookmarkIcon />
+                      {review.group}
                     </Typography>
-                    <Typography>{review.group}</Typography>
-                    <Typography>
+                    <Typography display={"flex"}>
+                      <TagIcon />
                       {JSON.parse(review.tag).map((review) => review + " ")}
                     </Typography>
-                    <Typography>{JSON.parse(review.liked).length}</Typography>
+                    <Typography display={"flex"}>
+                      <FavoriteBorderIcon />
+                      {JSON.parse(review.liked).length}
+                    </Typography>
                   </CardContent>
                   <CardActions>
                     <Button
@@ -240,7 +281,7 @@ const ReviewList = () => {
                         navigate(`/reviews/${review.uuid}`);
                       }}
                     >
-                      View
+                      {intl(INTL.REVIEWS_LIST.VIEW)}
                     </Button>
                   </CardActions>
                 </Card>

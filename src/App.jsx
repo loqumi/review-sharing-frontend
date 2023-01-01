@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { getMe } from "./features/authSlice";
 import { useDispatch } from "react-redux";
@@ -16,10 +16,11 @@ import Review from "./pages/Review";
 import Navbar from "./components/Navbar";
 
 function App() {
-  const [darkMode, setDarkMode] = React.useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState("en");
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDarkMode(localStorage.getItem("darkMode") === "true");
     dispatch(getMe());
   }, [dispatch]);
@@ -30,6 +31,11 @@ function App() {
     },
   });
 
+  const handleChange = (value) => {
+    setLanguage(value);
+    localStorage.setItem("lang", value);
+  };
+
   const handleClick = () => {
     setDarkMode(!darkMode);
     localStorage.setItem("darkMode", String(!darkMode));
@@ -38,7 +44,7 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Navbar onClick={handleClick} />
+        <Navbar onClick={handleClick} onChange={handleChange} />
         <Routes>
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/reviews/edit/:id" element={<EditReview />} />

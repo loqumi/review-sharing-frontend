@@ -15,6 +15,8 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material/";
+import { intl } from "../utils/intl";
+import { INTL } from "../constants/intl";
 
 const FormEditUser = () => {
   const [name, setName] = useState("");
@@ -64,7 +66,7 @@ const FormEditUser = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          Account details
+          {intl(INTL.MANAGE_ACCOUNT.ACCOUNT_DET)}
         </Typography>
         <Box component="form" onSubmit={updateUser} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -75,7 +77,7 @@ const FormEditUser = () => {
                 name="firstName"
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label={intl(INTL.REGISTRATION.FIRST_NAME)}
                 autoFocus
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -86,7 +88,7 @@ const FormEditUser = () => {
                 fullWidth
                 id="email"
                 type="email"
-                label="Email Address"
+                label={intl(INTL.LOGIN.EMAIL)}
                 name="email"
                 autoComplete="email"
                 value={email}
@@ -97,7 +99,7 @@ const FormEditUser = () => {
               <TextField
                 fullWidth
                 name="password"
-                label="Password"
+                label={intl(INTL.LOGIN.PASSWORD)}
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -109,7 +111,7 @@ const FormEditUser = () => {
               <TextField
                 fullWidth
                 name="confpassword"
-                label="Confirm Password"
+                label={intl(INTL.REGISTRATION.CONF_PASSWORD)}
                 type="password"
                 id="confpassword"
                 autoComplete="new-password"
@@ -120,7 +122,9 @@ const FormEditUser = () => {
             {user !== null && user.role === "admin" && (
               <Grid item xs={12}>
                 <FormControl fullWidth>
-                  <InputLabel id="role-select-label">Role</InputLabel>
+                  <InputLabel id="role-select-label">
+                    {intl(INTL.MANAGE_ACCOUNT.ROLE)}
+                  </InputLabel>
                   <Select
                     labelId="role-select-label"
                     label="Role"
@@ -128,8 +132,12 @@ const FormEditUser = () => {
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
                   >
-                    <MenuItem value={"user"}>User</MenuItem>
-                    <MenuItem value={"admin"}>Admin</MenuItem>
+                    <MenuItem value={"user"}>
+                      {intl(INTL.MANAGE_ACCOUNT.USER)}
+                    </MenuItem>
+                    <MenuItem value={"admin"}>
+                      {intl(INTL.MANAGE_ACCOUNT.ADMIN)}
+                    </MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -142,7 +150,7 @@ const FormEditUser = () => {
             color="success"
             sx={{ mt: 3, mb: 2 }}
           >
-            Confirm changes
+            {intl(INTL.MANAGE_ACCOUNT.CONFIRM)}
           </Button>
         </Box>
       </Box>

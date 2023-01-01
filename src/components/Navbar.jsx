@@ -3,7 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { LogOut, reset } from "../features/authSlice";
-import axios from "axios";
+import { styled, useTheme } from "@mui/material/styles";
 import {
   AppBar,
   TextField,
@@ -18,8 +18,10 @@ import {
   Divider,
   ListItem,
   ListItemButton,
+  FormControl,
+  Select,
 } from "@mui/material/";
-import { styled, useTheme } from "@mui/material/styles";
+import axios from "axios";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -32,11 +34,14 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import RateReviewIcon from "@mui/icons-material/RateReview";
+import { intl } from "../utils/intl";
+import { INTL } from "../constants/intl";
 
-const Navbar = ({ onClick }) => {
+const Navbar = ({ onClick, onChange }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [likes, setLikes] = useState(0);
+  const [language, setLanguage] = useState("en");
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -111,14 +116,28 @@ const Navbar = ({ onClick }) => {
     justifyContent: "flex-end",
   }));
 
+  const handleChangeLang = (e) => {
+    const value = e.target.value;
+    onChange(value);
+    setLanguage(value);
+  };
+
   useEffect(() => {
     getUserLikes();
+    const lang = localStorage.getItem("lang") || "en";
+    setLanguage(lang);
   }, [getUserLikes]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" color="inherit">
         <Toolbar>
+          <FormControl>
+            <Select value={language} onChange={handleChangeLang}>
+              <MenuItem value={"en"}>en</MenuItem>
+              <MenuItem value={"ru"}>ru</MenuItem>
+            </Select>
+          </FormControl>
           {isMobile && (
             <Box display={"flex"}>
               <IconButton
@@ -164,7 +183,7 @@ const Navbar = ({ onClick }) => {
                         <ListItemIcon>
                           <AccountBoxIcon />
                         </ListItemIcon>
-                        Profile
+                        {intl(INTL.NAV.PROFILE)}
                       </ListItemButton>
                     </ListItem>
                     <ListItem onClick={handleChange}>
@@ -172,7 +191,7 @@ const Navbar = ({ onClick }) => {
                         <ListItemIcon>
                           <ManageAccountsIcon />
                         </ListItemIcon>
-                        Manage Acc
+                        {intl(INTL.NAV.MANAGE_ACCOUNT)}
                       </ListItemButton>
                     </ListItem>
                   </List>
@@ -187,7 +206,7 @@ const Navbar = ({ onClick }) => {
                         <ListItemIcon>
                           <GroupIcon />
                         </ListItemIcon>
-                        Users
+                        {intl(INTL.NAV.USERS)}
                       </ListItemButton>
                     </ListItem>
                   </List>
@@ -200,7 +219,7 @@ const Navbar = ({ onClick }) => {
                     <ListItemIcon>
                       <ReviewsIcon />
                     </ListItemIcon>
-                    Reviews
+                    {intl(INTL.NAV.REVIEWS)}
                   </ListItemButton>
                 </ListItem>
               </List>
@@ -212,7 +231,7 @@ const Navbar = ({ onClick }) => {
                         <ListItemIcon>
                           <RateReviewIcon />
                         </ListItemIcon>
-                        Add Review
+                        {intl(INTL.NAV.ADD_REVIEW)}
                       </ListItemButton>
                     </ListItem>
                   </List>
@@ -223,7 +242,7 @@ const Navbar = ({ onClick }) => {
                         <ListItemIcon>
                           <LogoutIcon />
                         </ListItemIcon>
-                        Logout
+                        {intl(INTL.NAV.LOGOUT)}
                       </ListItemButton>
                     </ListItem>
                   </List>
@@ -235,19 +254,19 @@ const Navbar = ({ onClick }) => {
             {!isMobile && (
               <Box display={"flex"}>
                 <Button onClick={() => navigate("/")} color="inherit">
-                  Reviews
+                  {intl(INTL.NAV.REVIEWS)}
                 </Button>
                 {user && (
                   <Button
                     onClick={() => navigate("/reviews/add")}
                     color="inherit"
                   >
-                    Add Review
+                    {intl(INTL.NAV.ADD_REVIEW)}
                   </Button>
                 )}
                 {user !== null && user.role === "admin" && (
                   <Button onClick={() => navigate("/users")} color="inherit">
-                    Users
+                    {intl(INTL.NAV.USERS)}
                   </Button>
                 )}
               </Box>
@@ -261,19 +280,19 @@ const Navbar = ({ onClick }) => {
             </IconButton>
             <TextField
               sx={{ ml: 1, flex: 1 }}
-              label="Search in"
+              label={intl(INTL.NAV.SEARCH)}
               id="outlined-size-small"
               size="small"
             />
             {!user && (
               <Button color="inherit" onClick={logout}>
-                Login
+                {intl(INTL.NAV.LOGIN)}
               </Button>
             )}
             {user && (
               <Box display={"flex"}>
                 <Button color={"success"} align="center">
-                  Rating {likes}
+                  {intl(INTL.NAV.USER_INFO)} {likes}
                 </Button>
                 {!isMobile && (
                   <div>
@@ -295,9 +314,15 @@ const Navbar = ({ onClick }) => {
                       open={Boolean(anchorEl)}
                       onClose={() => setAnchorEl(null)}
                     >
-                      <MenuItem onClick={handleProfile}>Profile</MenuItem>
-                      <MenuItem onClick={handleChange}>My account</MenuItem>
-                      <MenuItem onClick={logout}>Logout</MenuItem>
+                      <MenuItem onClick={handleProfile}>
+                        {intl(INTL.NAV.PROFILE)}
+                      </MenuItem>
+                      <MenuItem onClick={handleChange}>
+                        {intl(INTL.NAV.MANAGE_ACCOUNT)}
+                      </MenuItem>
+                      <MenuItem onClick={logout}>
+                        {intl(INTL.NAV.LOGOUT)}
+                      </MenuItem>
                     </Menu>
                   </div>
                 )}

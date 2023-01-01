@@ -22,6 +22,8 @@ import {
 } from "@mui/material/";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { intl } from "../utils/intl";
+import { INTL } from "../constants/intl";
 
 const FormAddReviewID = () => {
   const [title, setTitle] = useState("");
@@ -56,8 +58,8 @@ const FormAddReviewID = () => {
     } catch (error) {}
   };
 
-  const handleUpload = useCallback((e) => {
-    const file = e.target.files[0];
+  const handleUpload = useCallback((droppedFile) => {
+    const file = droppedFile[0];
     uploadFiles(file);
   }, []);
 
@@ -119,17 +121,14 @@ const FormAddReviewID = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          New Review Deploy
+          {intl(INTL.FORM_ADD_REVIEW.NEW_REVIEW)}
         </Typography>
         <Box component="form" onSubmit={saveReview} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} display={"flex"} justifyContent="center">
               <Box {...getRootProps()}>
                 <input {...getInputProps()} onDrop={handleUpload} />
-                <p>
-                  Drag 'n' drop some files here, or click to select files to
-                  preview of your review
-                </p>
+                <p>{intl(INTL.FORM_ADD_REVIEW.DND)}</p>
               </Box>
               {process === 100 && (
                 <IconButton
@@ -148,8 +147,7 @@ const FormAddReviewID = () => {
                 name="title"
                 fullWidth
                 id="title"
-                label="Title"
-                placeholder="Title of your Review"
+                label={intl(INTL.FORM_ADD_REVIEW.TITLE)}
                 autoFocus
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -160,8 +158,7 @@ const FormAddReviewID = () => {
                 required
                 fullWidth
                 id="Product"
-                label="Product"
-                placeholder="Harry Potter, DOOM or etc..."
+                label={intl(INTL.FORM_ADD_REVIEW.PRODUCT)}
                 name="product"
                 value={product}
                 onChange={(e) => setProduct(e.target.value)}
@@ -169,18 +166,28 @@ const FormAddReviewID = () => {
             </Grid>
             <Grid item xs={12}>
               <FormControl fullWidth required>
-                <InputLabel id="group-select-label">Group</InputLabel>
+                <InputLabel id="group-select-label">
+                  {intl(INTL.FORM_ADD_REVIEW.GROUP)}
+                </InputLabel>
                 <Select
                   labelId="group-select-label"
-                  label="Group"
+                  label={intl(INTL.FORM_ADD_REVIEW.GROUP)}
                   id="group-select"
                   value={group}
                   onChange={(e) => setGroup(e.target.value)}
                 >
-                  <MenuItem value={"movie"}>Movie</MenuItem>
-                  <MenuItem value={"game"}>Game</MenuItem>
-                  <MenuItem value={"book"}>Book</MenuItem>
-                  <MenuItem value={"anime"}>Anime</MenuItem>
+                  <MenuItem value={"movie"}>
+                    {intl(INTL.FORM_ADD_REVIEW.MOVIE)}
+                  </MenuItem>
+                  <MenuItem value={"game"}>
+                    {intl(INTL.FORM_ADD_REVIEW.GAME)}
+                  </MenuItem>
+                  <MenuItem value={"book"}>
+                    {intl(INTL.FORM_ADD_REVIEW.BOOK)}
+                  </MenuItem>
+                  <MenuItem value={"anime"}>
+                    {intl(INTL.FORM_ADD_REVIEW.ANIME)}
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -204,8 +211,7 @@ const FormAddReviewID = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Tags"
-                    placeholder="Write tags"
+                    label={intl(INTL.FORM_ADD_REVIEW.TAGS)}
                   />
                 )}
               />
@@ -215,18 +221,17 @@ const FormAddReviewID = () => {
                 required
                 fullWidth
                 name="text"
-                label="Text"
+                label={intl(INTL.FORM_ADD_REVIEW.TEXT)}
                 id="text"
                 multiline
                 rows={4}
-                placeholder="Body text"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
               />
             </Grid>
             <Grid item xs={12} align="center">
               <Typography component="legend" variant="h5">
-                Your Rating
+                {intl(INTL.FORM_ADD_REVIEW.RATING)}
               </Typography>
               <Rating
                 max={10}
@@ -244,7 +249,7 @@ const FormAddReviewID = () => {
             color="success"
             sx={{ mt: 3, mb: 2 }}
           >
-            Confirm changes
+            {intl(INTL.MANAGE_ACCOUNT.CONFIRM)}
           </Button>
         </Box>
       </Box>

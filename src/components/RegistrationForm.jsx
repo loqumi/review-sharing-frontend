@@ -11,6 +11,8 @@ import {
   Typography,
   Container,
 } from "@mui/material/";
+import { intl } from "../utils/intl";
+import { INTL } from "../constants/intl";
 
 const RegistrationForm = () => {
   const [name, setName] = useState("");
@@ -43,7 +45,7 @@ const RegistrationForm = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          Sign in
+          {intl(INTL.REGISTRATION.SIGN_UP)}
         </Typography>
         <Box component="form" onSubmit={saveUser} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
@@ -54,7 +56,7 @@ const RegistrationForm = () => {
                 name="firstName"
                 fullWidth
                 id="firstName"
-                label="First Name"
+                label={intl(INTL.REGISTRATION.FIRST_NAME)}
                 autoFocus
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -66,7 +68,7 @@ const RegistrationForm = () => {
                 fullWidth
                 id="email"
                 type="email"
-                label="Email Address"
+                label={intl(INTL.LOGIN.EMAIL)}
                 name="email"
                 autoComplete="email"
                 value={email}
@@ -78,7 +80,7 @@ const RegistrationForm = () => {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label={intl(INTL.LOGIN.PASSWORD)}
                 type="password"
                 id="password"
                 autoComplete="new-password"
@@ -91,7 +93,7 @@ const RegistrationForm = () => {
                 required
                 fullWidth
                 name="confpassword"
-                label="Confirm Password"
+                label={intl(INTL.REGISTRATION.CONF_PASSWORD)}
                 type="password"
                 id="confpassword"
                 autoComplete="new-password"
@@ -107,12 +109,12 @@ const RegistrationForm = () => {
             color="success"
             sx={{ mt: 3, mb: 2 }}
           >
-            Sign Up
+            {intl(INTL.REGISTRATION.SIGN_UP)}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/login" variant="body2">
-                Already have an account? Sign in
+                {intl(INTL.REGISTRATION.ALREADY)}
               </Link>
             </Grid>
           </Grid>

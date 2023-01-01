@@ -12,18 +12,19 @@ import {
   IconButton,
   Typography,
   Container,
-  Alert,
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import { FaDiscord } from "react-icons/fa";
+import { intl } from "../utils/intl";
+import { INTL } from "../constants/intl";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isError, isSuccess, isLoading, message } = useSelector(
+  const { user, isSuccess, isLoading } = useSelector(
     (state) => state.auth
   );
 
@@ -66,20 +67,15 @@ const LoginForm = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          Sign in
+          {intl(INTL.LOGIN.SIGN_IN)}
         </Typography>
         <Box component="form" onSubmit={Auth} sx={{ mt: 1 }}>
-          {isError && (
-            <Alert variant="outlined" severity="error">
-              {message}
-            </Alert>
-          )}
           <TextField
             margin="normal"
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={intl(INTL.LOGIN.EMAIL)}
             name="email"
             type="email"
             autoComplete="email"
@@ -92,7 +88,7 @@ const LoginForm = () => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label={intl(INTL.LOGIN.PASSWORD)}
             type="password"
             id="password"
             autoComplete="current-password"
@@ -106,7 +102,7 @@ const LoginForm = () => {
             color="success"
             sx={{ mt: 3, mb: 2 }}
           >
-            {isLoading ? "Loading..." : "Sign in"}
+            {isLoading ? "Loading..." : intl(INTL.LOGIN.SIGN_IN)}
           </Button>
           <Grid
             container
@@ -149,12 +145,12 @@ const LoginForm = () => {
           <Grid container>
             <Grid item xs>
               <Link href="/" variant="body2">
-                {"Continue without sign in"}
+                {intl(INTL.LOGIN.SIGN_IN_WITHOUT)}
               </Link>
             </Grid>
             <Grid item>
               <Link href="/reg" variant="body2">
-                {"Don't have an account? Sign Up"}
+                {intl(INTL.LOGIN.REGISTER)}
               </Link>
             </Grid>
           </Grid>

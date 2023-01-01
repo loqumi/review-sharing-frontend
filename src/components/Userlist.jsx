@@ -21,6 +21,8 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import BlockIcon from "@mui/icons-material/Block";
+import { intl } from "../utils/intl";
+import { INTL } from "../constants/intl";
 
 const Userlist = () => {
   const [users, setUsers] = useState([]);
@@ -135,7 +137,7 @@ const Userlist = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          Toolbar
+          {intl(INTL.USER_LIST.TOOLBAR)}
         </Typography>
         <Box
           sx={{
@@ -149,17 +151,17 @@ const Userlist = () => {
             color="error"
             startIcon={<DeleteIcon />}
           >
-            Delete
+            {intl(INTL.USER_LIST.DELETE)}
           </Button>
           <Button onClick={blockUsers} color="error" startIcon={<BlockIcon />}>
-            Block
+            {intl(INTL.USER_LIST.BLOCK)}
           </Button>
           <Button
             onClick={unBlockUsers}
             color="success"
             startIcon={<BlockIcon />}
           >
-            Unblock
+            {intl(INTL.USER_LIST.UNBLOCK)}
           </Button>
         </Box>
       </Box>
@@ -173,7 +175,7 @@ const Userlist = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          Table of Users
+          {intl(INTL.USER_LIST.TABLE)}
         </Typography>
       </Box>
       <Table sx={{ minWidth: 650, marginTop: 2 }} aria-label="simple table">
@@ -188,12 +190,18 @@ const Userlist = () => {
                 }}
               />
             </TableCell>
-            <TableCell align="right">USER NAME/LASTNAME</TableCell>
+            <TableCell align="right">{intl(INTL.USER_LIST.NAME)}</TableCell>
             <TableCell align="center">EMAIL</TableCell>
-            <TableCell align="center">STATUS</TableCell>
-            <TableCell align="center">ROLE</TableCell>
-            <TableCell align="center">CREATED AT</TableCell>
-            <TableCell align="center">LAST UPDATE</TableCell>
+            <TableCell align="center">{intl(INTL.USER_LIST.STATUS)}</TableCell>
+            <TableCell align="center">
+              {intl(INTL.MANAGE_ACCOUNT.ROLE)}
+            </TableCell>
+            <TableCell align="center">
+              {intl(INTL.USER_LIST.CREATED_AT)}
+            </TableCell>
+            <TableCell align="center">
+              {intl(INTL.USER_LIST.LAST_UPD)}
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -228,9 +236,15 @@ const Userlist = () => {
                 </TableCell>
                 <TableCell align="center">{user.email}</TableCell>
                 <TableCell align="center">
-                  {Number(user.status) ? "banned" : "unbanned"}
+                  {Number(user.status)
+                    ? intl(INTL.USER_LIST.BAN)
+                    : intl(INTL.USER_LIST.UNBAN)}
                 </TableCell>
-                <TableCell align="center">{user.role}</TableCell>
+                <TableCell align="center">
+                  {user.role === "user"
+                    ? intl(INTL.MANAGE_ACCOUNT.USER)
+                    : intl(INTL.MANAGE_ACCOUNT.ADMIN)}
+                </TableCell>
                 <TableCell align="center">{user.createdAt}</TableCell>
                 <TableCell align="center">{user.updatedAt}</TableCell>
               </TableRow>
