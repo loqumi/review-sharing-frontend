@@ -37,6 +37,8 @@ import RateReviewIcon from "@mui/icons-material/RateReview";
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const Navbar = ({ onClick, onChange }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -52,7 +54,7 @@ const Navbar = ({ onClick, onChange }) => {
   const getUserLikes = React.useCallback(async () => {
     try {
       const response = await axios.get(
-        `https://webapp-backend-production.up.railway.app/user/rating/?userId=${user.uuid}`
+        `${URL}/user/rating/?userId=${user.uuid}`
       );
       setLikes(response.data);
     } catch (error) {}

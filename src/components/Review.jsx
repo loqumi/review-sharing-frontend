@@ -19,8 +19,8 @@ import {
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
-const no_image =
-  "https://firebasestorage.googleapis.com/v0/b/cloud-storage-3201c.appspot.com/o/files%2Fno-image.png?alt=media&token=eeda5f87-0329-420e-863c-d0f9d3b41424";
+
+const URL = "https://webapp-backend-production.up.railway.app";
 
 const Review = () => {
   const { user } = useSelector((state) => state.auth);
@@ -33,14 +33,13 @@ const Review = () => {
   const [commonRating, setCommonRating] = useState([]);
   const [liked, setLiked] = useState([]);
   const [likes, setLikes] = useState("");
-
   const { id } = useParams();
+  const no_image =
+    "https://firebasestorage.googleapis.com/v0/b/cloud-storage-3201c.appspot.com/o/files%2Fno-image.png?alt=media&token=eeda5f87-0329-420e-863c-d0f9d3b41424";
 
   const getReviewById = React.useCallback(async () => {
     try {
-      const response = await axios.get(
-        `https://webapp-backend-production.up.railway.app/reviews/${id}`
-      );
+      const response = await axios.get(`${URL}/reviews/${id}`);
       setReview(response.data);
       setUsername(response.data.user.name);
       setTag(JSON.parse(response.data.tag).map((review) => review + " "));
@@ -52,27 +51,21 @@ const Review = () => {
 
   const getUserLikes = React.useCallback(async () => {
     try {
-      const response = await axios.get(
-        `https://webapp-backend-production.up.railway.app/user/rating/?reviewId=${id}`
-      );
+      const response = await axios.get(`${URL}/user/rating/?reviewId=${id}`);
       setLikes(response.data);
     } catch (error) {}
   }, [id]);
 
   const getComments = React.useCallback(async () => {
     try {
-      const response = await axios.get(
-        `https://webapp-backend-production.up.railway.app/comments/?reviewId=${id}`
-      );
+      const response = await axios.get(`${URL}/comments/?reviewId=${id}`);
       setComments(response.data);
     } catch (error) {}
   }, [id]);
 
   const setLike = async () => {
     try {
-      const response = await axios.get(
-        `https://webapp-backend-production.up.railway.app/reviews/like/${id}`
-      );
+      const response = await axios.get(`${URL}/reviews/like/${id}`);
       setLiked(response.data);
     } catch (error) {}
   };
@@ -80,10 +73,9 @@ const Review = () => {
   const sendRating = async (rating) => {
     if (!rating) return;
     try {
-      const response = await axios.post(
-        `https://webapp-backend-production.up.railway.app/reviews/product/rating/${id}`,
-        { rating }
-      );
+      const response = await axios.post(`${URL}/reviews/product/rating/${id}`, {
+        rating,
+      });
       setRating(response.data[user?.uuid]);
     } catch (error) {}
   };
@@ -92,7 +84,7 @@ const Review = () => {
     e.preventDefault();
     try {
       await axios
-        .post("https://webapp-backend-production.up.railway.app/comments", {
+        .post(`${URL}/comments`, {
           comment,
           reviewId: review.id,
         })
@@ -104,12 +96,10 @@ const Review = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       (async () => {
-        const res = await axios.get(
-          `https://webapp-backend-production.up.railway.app/comments/?reviewId=${id}`
-        );
+        const res = await axios.get(`${URL}/comments/?reviewId=${id}`);
         setComments(res.data);
       })();
-    }, 99995000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [id]);
 

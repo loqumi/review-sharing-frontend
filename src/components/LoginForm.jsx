@@ -19,6 +19,8 @@ import { FaDiscord } from "react-icons/fa";
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,24 +42,15 @@ const LoginForm = () => {
   };
 
   const google = () => {
-    window.open(
-      "https://webapp-backend-production.up.railway.app/google",
-      "_self"
-    );
+    window.open(`${URL}/google`, "_self");
   };
 
   const github = () => {
-    window.open(
-      "https://webapp-backend-production.up.railway.app/github",
-      "_self"
-    );
+    window.open(`${URL}/github`, "_self");
   };
 
   const discord = () => {
-    window.open(
-      "https://webapp-backend-production.up.railway.app/discord",
-      "_self"
-    );
+    window.open(`${URL}/discord`, "_self");
   };
 
   return (

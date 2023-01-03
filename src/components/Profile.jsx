@@ -19,9 +19,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const Profile = () => {
   const [name, setName] = useState("");
-  const [role, setRole] = useState("");
   const [reviews, setReviews] = useState([]);
   const [likes, setLikes] = useState(0);
   const { user } = useSelector((state) => state.auth);
@@ -40,38 +41,27 @@ const Profile = () => {
 
   const getUserLikes = React.useCallback(async () => {
     try {
-      const response = await axios.get(
-        `https://webapp-backend-production.up.railway.app/user/rating/?userId=${id}`
-      );
+      const response = await axios.get(`${URL}/user/rating/?userId=${id}`);
       setLikes(response.data);
     } catch (error) {}
   }, [id]);
 
   const getUserById = React.useCallback(async () => {
     try {
-      const response = await axios.get(
-        `https://webapp-backend-production.up.railway.app/users/${id}`
-      );
+      const response = await axios.get(`${URL}/users/${id}`);
       setName(response.data.name);
-      setRole(response.data.role);
     } catch (error) {}
   }, [id]);
 
   const getReviews = React.useCallback(async () => {
     const response = await axios
-      .get(
-        `https://webapp-backend-production.up.railway.app/reviews/?userId=${id}`
-      )
+      .get(`${URL}/reviews/?userId=${id}`)
       .catch(login);
     setReviews(response.data);
   }, [id, login]);
 
   const deleteReview = async (reviewId) => {
-    await axios
-      .delete(
-        `https://webapp-backend-production.up.railway.app/reviews/${reviewId}`
-      )
-      .catch(login);
+    await axios.delete(`${URL}/reviews/${reviewId}`).catch(login);
     getReviews();
   };
 

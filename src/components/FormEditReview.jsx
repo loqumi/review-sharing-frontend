@@ -25,6 +25,8 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const FormEditReview = () => {
   const [title, setTitle] = useState("");
   const [product, setProduct] = useState("");
@@ -41,9 +43,7 @@ const FormEditReview = () => {
   useEffect(() => {
     const getReviewById = async () => {
       try {
-        const response = await axios.get(
-          `https://webapp-backend-production.up.railway.app/reviews/${id}`
-        );
+        const response = await axios.get(`${URL}/reviews/${id}`);
         setTitle(response.data.title);
         setProduct(response.data.product);
         setGroup(response.data.group);
@@ -58,20 +58,17 @@ const FormEditReview = () => {
   const updateReview = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        `https://webapp-backend-production.up.railway.app/reviews/${id}`,
-        {
-          titleImage,
-          title,
-          product,
-          group,
-          tag: value,
-          text,
-          rating,
-        }
-      );
+      await axios.post(`${URL}/reviews/${id}`, {
+        titleImage,
+        title,
+        product,
+        group,
+        tag: value,
+        text,
+        rating,
+      });
       await axios
-        .post("https://webapp-backend-production.up.railway.app/tags", {
+        .post(`${URL}/tags`, {
           tag: value,
         })
         .then(navigate("/"));
@@ -80,9 +77,7 @@ const FormEditReview = () => {
 
   const getTags = React.useCallback(async () => {
     try {
-      const response = await axios.get(
-        "https://webapp-backend-production.up.railway.app/tags"
-      );
+      const response = await axios.get(`${URL}/tags`);
       setTags(response.data);
     } catch (error) {}
   }, []);

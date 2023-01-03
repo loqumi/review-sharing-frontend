@@ -14,6 +14,8 @@ import {
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const RegistrationForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,15 +26,12 @@ const RegistrationForm = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        "https://webapp-backend-production.up.railway.app/users",
-        {
-          name,
-          email,
-          password,
-          confPassword,
-        }
-      );
+      await axios.post(`${URL}/users`, {
+        name,
+        email,
+        password,
+        confPassword,
+      });
       navigate("/login");
     } catch (error) {}
   };

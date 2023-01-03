@@ -22,6 +22,8 @@ import { Autocomplete, Chip, TextField } from "@mui/material";
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const ReviewList = () => {
   const [reviews, setReviews] = useState([]);
   const [popularReviews, setPopularReviews] = useState([]);
@@ -46,29 +48,23 @@ const ReviewList = () => {
   );
 
   const getPopularReviews = React.useCallback(async () => {
-    const response = await axios
-      .get("https://webapp-backend-production.up.railway.app/reviews/popular")
-      .catch(login);
+    const response = await axios.get(`${URL}/reviews/popular`).catch(login);
     setPopularReviews(response.data);
   }, [login]);
 
   const getRecentlyReviews = React.useCallback(async () => {
-    const response = await axios
-      .get("https://webapp-backend-production.up.railway.app/reviews/recently")
-      .catch(login);
+    const response = await axios.get(`${URL}/reviews/recently`).catch(login);
     setRecentlyReviews(response.data);
   }, [login]);
 
   const getReviews = React.useCallback(async () => {
-    const response = await axios
-      .get("https://webapp-backend-production.up.railway.app/reviews")
-      .catch(login);
+    const response = await axios.get(`${URL}/reviews`).catch(login);
     setReviews(response.data);
   }, [login]);
 
   const getTags = React.useCallback(async () => {
     try {
-      const response = await axios.get("https://webapp-backend-production.up.railway.app/tags");
+      const response = await axios.get(`${URL}/tags`);
       setTags(response.data);
     } catch (error) {}
   }, []);

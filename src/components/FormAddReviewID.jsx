@@ -25,6 +25,8 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const FormAddReviewID = () => {
   const [title, setTitle] = useState("");
   const [product, setProduct] = useState("");
@@ -41,20 +43,17 @@ const FormAddReviewID = () => {
   const saveReview = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        `https://webapp-backend-production.up.railway.app/reviews/add/${id}`,
-        {
-          titleImage,
-          title,
-          product,
-          group,
-          tag: value,
-          text,
-          rating,
-        }
-      );
+      await axios.post(`${URL}/reviews/add/${id}`, {
+        titleImage,
+        title,
+        product,
+        group,
+        tag: value,
+        text,
+        rating,
+      });
       await axios
-        .post("https://webapp-backend-production.up.railway.app/tags", {
+        .post(`${URL}/tags`, {
           tag: value,
         })
         .then(navigate("/"));
@@ -90,9 +89,7 @@ const FormAddReviewID = () => {
 
   const getTags = React.useCallback(async () => {
     try {
-      const response = await axios.get(
-        "https://webapp-backend-production.up.railway.app/tags"
-      );
+      const response = await axios.get(`${URL}/tags`);
       setTags(response.data);
     } catch (error) {}
   }, []);

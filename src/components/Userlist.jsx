@@ -24,6 +24,8 @@ import BlockIcon from "@mui/icons-material/Block";
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const Userlist = () => {
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectUser] = useState([]);
@@ -44,9 +46,7 @@ const Userlist = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await axios
-        .get("https://webapp-backend-production.up.railway.app/users")
-        .catch(exit);
+      const res = await axios.get(`${URL}/users`).catch(exit);
       setUsers(res.data);
     })();
   }, [exit]);
@@ -58,10 +58,7 @@ const Userlist = () => {
       return [...prev, { ...user, status: true }];
     }, []);
     await axios
-      .post(
-        `https://webapp-backend-production.up.railway.app/users/block`,
-        data
-      )
+      .post(`${URL}/users/block`, data)
       .then(() => {
         if (selectedUsers.includes(user.uuid)) {
           logout();
@@ -85,10 +82,7 @@ const Userlist = () => {
       return [...prev, { ...user, status: false }];
     }, []);
     await axios
-      .post(
-        `https://webapp-backend-production.up.railway.app/users/unblock`,
-        data
-      )
+      .post(`${URL}/users/unblock`, data)
       .then(() => {
         setUsers((prev) =>
           prev.reduce((prev, curr) => {
@@ -103,10 +97,7 @@ const Userlist = () => {
 
   const deleteUsers = async () => {
     await axios
-      .post(
-        `https://webapp-backend-production.up.railway.app/users/delete`,
-        selectedUsers
-      )
+      .post(`${URL}/users/delete`, selectedUsers)
       .then(() => {
         if (selectedUsers.includes(user.uuid)) {
           logout();

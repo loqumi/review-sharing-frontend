@@ -21,6 +21,8 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const Results = () => {
   const [reviews, setReviews] = useState([]);
   const dispatch = useDispatch();
@@ -42,9 +44,7 @@ const Results = () => {
 
   const getReviews = React.useCallback(async () => {
     const response = await axios
-      .get(
-        `https://webapp-backend-production.up.railway.app/reviews/search/?searchSTR=${query}`
-      )
+      .get(`${URL}/reviews/search/?searchSTR=${query}`)
       .catch(login);
     setReviews(response.data);
   }, [login, query]);

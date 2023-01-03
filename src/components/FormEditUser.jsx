@@ -18,6 +18,8 @@ import {
 import { intl } from "../utils/intl";
 import { INTL } from "../constants/intl";
 
+const URL = "https://webapp-backend-production.up.railway.app";
+
 const FormEditUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,9 +33,7 @@ const FormEditUser = () => {
   useEffect(() => {
     const getUserById = async () => {
       try {
-        const response = await axios.get(
-          `https://webapp-backend-production.up.railway.app/users/${id}`
-        );
+        const response = await axios.get(`${URL}/users/${id}`);
         setName(response.data.name);
         setEmail(!response.data.email ? "" : response.data.email);
         setRole(response.data.role);
@@ -45,16 +45,13 @@ const FormEditUser = () => {
   const updateUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        `https://webapp-backend-production.up.railway.app/users/${id}`,
-        {
-          name: name,
-          email: email,
-          password: password,
-          confPassword: confPassword,
-          role: role,
-        }
-      );
+      await axios.post(`${URL}/users/${id}`, {
+        name: name,
+        email: email,
+        password: password,
+        confPassword: confPassword,
+        role: role,
+      });
       navigate("/");
       navigate(0);
     } catch (error) {}
