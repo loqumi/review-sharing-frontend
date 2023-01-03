@@ -42,6 +42,7 @@ const Navbar = ({ onClick, onChange }) => {
   const [open, setOpen] = useState(false);
   const [likes, setLikes] = useState(0);
   const [language, setLanguage] = useState("en");
+  const [searchSTR, setSearchSTR] = useState("");
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const Navbar = ({ onClick, onChange }) => {
   const getUserLikes = React.useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/user/rating/?userId=${user.uuid}`
+        `https://webapp-backend-production.up.railway.app/user/rating/?userId=${user.uuid}`
       );
       setLikes(response.data);
     } catch (error) {}
@@ -101,6 +102,17 @@ const Navbar = ({ onClick, onChange }) => {
     setOpen(false);
   };
 
+  const handleChangeLang = (e) => {
+    const value = e.target.value;
+    onChange(value);
+    setLanguage(value);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(`/search/?query=${searchSTR}`);
+  };
+
   const logout = () => {
     dispatch(LogOut());
     dispatch(reset());
@@ -115,12 +127,6 @@ const Navbar = ({ onClick, onChange }) => {
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
   }));
-
-  const handleChangeLang = (e) => {
-    const value = e.target.value;
-    onChange(value);
-    setLanguage(value);
-  };
 
   useEffect(() => {
     getUserLikes();
@@ -278,12 +284,20 @@ const Navbar = ({ onClick, onChange }) => {
                 <Brightness4Icon />
               )}
             </IconButton>
-            <TextField
+            <Box
+              component="form"
+              onSubmit={handleSearch}
               sx={{ ml: 1, flex: 1 }}
-              label={intl(INTL.NAV.SEARCH)}
-              id="outlined-size-small"
-              size="small"
-            />
+            >
+              <TextField
+                fullWidth
+                label={intl(INTL.NAV.SEARCH)}
+                value={searchSTR}
+                onChange={(e) => setSearchSTR(e.target.value)}
+                id="outlined-size-small"
+                size="small"
+              />
+            </Box>
             {!user && (
               <Button color="inherit" onClick={logout}>
                 {intl(INTL.NAV.LOGIN)}

@@ -24,12 +24,15 @@ const RegistrationForm = () => {
   const saveUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/users", {
-        name,
-        email,
-        password,
-        confPassword,
-      });
+      await axios.post(
+        "https://webapp-backend-production.up.railway.app/users",
+        {
+          name,
+          email,
+          password,
+          confPassword,
+        }
+      );
       navigate("/login");
     } catch (error) {}
   };

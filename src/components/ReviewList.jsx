@@ -30,6 +30,9 @@ const ReviewList = () => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const no_image =
+    "https://firebasestorage.googleapis.com/v0/b/cloud-storage-3201c.appspot.com/o/files%2Fno-image.png?alt=media&token=eeda5f87-0329-420e-863c-d0f9d3b41424";
+
   if (user && user.name === "") navigate(`/users/edit/${user.uuid}`);
 
   const logout = React.useCallback(() => {
@@ -44,28 +47,28 @@ const ReviewList = () => {
 
   const getPopularReviews = React.useCallback(async () => {
     const response = await axios
-      .get("http://localhost:5000/reviews/popular")
+      .get("https://webapp-backend-production.up.railway.app/reviews/popular")
       .catch(login);
     setPopularReviews(response.data);
   }, [login]);
 
   const getRecentlyReviews = React.useCallback(async () => {
     const response = await axios
-      .get("http://localhost:5000/reviews/recently")
+      .get("https://webapp-backend-production.up.railway.app/reviews/recently")
       .catch(login);
     setRecentlyReviews(response.data);
   }, [login]);
 
   const getReviews = React.useCallback(async () => {
     const response = await axios
-      .get("http://localhost:5000/reviews")
+      .get("https://webapp-backend-production.up.railway.app/reviews")
       .catch(login);
     setReviews(response.data);
   }, [login]);
 
   const getTags = React.useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:5000/tags");
+      const response = await axios.get("https://webapp-backend-production.up.railway.app/tags");
       setTags(response.data);
     } catch (error) {}
   }, []);
@@ -116,11 +119,20 @@ const ReviewList = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    image={review.titleImage}
-                    alt="titleImage"
-                  />
+                  {review.titleImage === null && (
+                    <CardMedia
+                      component="img"
+                      image={no_image}
+                      alt="titleImage"
+                    />
+                  )}
+                  {review.titleImage !== null && (
+                    <CardMedia
+                      component="img"
+                      image={review.titleImage}
+                      alt="titleImage"
+                    />
+                  )}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {review.title}
@@ -179,11 +191,20 @@ const ReviewList = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    image={review.titleImage}
-                    alt="titleImage"
-                  />
+                  {review.titleImage === null && (
+                    <CardMedia
+                      component="img"
+                      image={no_image}
+                      alt="titleImage"
+                    />
+                  )}
+                  {review.titleImage !== null && (
+                    <CardMedia
+                      component="img"
+                      image={review.titleImage}
+                      alt="titleImage"
+                    />
+                  )}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {review.title}
@@ -239,11 +260,20 @@ const ReviewList = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <CardMedia
-                    component="img"
-                    image={review.titleImage}
-                    alt="titleImage"
-                  />
+                  {review.titleImage === null && (
+                    <CardMedia
+                      component="img"
+                      image={no_image}
+                      alt="titleImage"
+                    />
+                  )}
+                  {review.titleImage !== null && (
+                    <CardMedia
+                      component="img"
+                      image={review.titleImage}
+                      alt="titleImage"
+                    />
+                  )}
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {review.title}{" "}

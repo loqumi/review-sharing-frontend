@@ -69,11 +69,11 @@ export const INTL = {
       ru: "Пароль",
     },
     SIGN_IN: {
-      en: "Sign in",
+      en: "Log in",
       ru: "Войти",
     },
     SIGN_IN_WITHOUT: {
-      en: "Continue without sign in",
+      en: "Continue without log in",
       ru: "Продолжить без входа",
     },
     REGISTER: {
@@ -221,6 +221,28 @@ export const INTL = {
     ADD_REVIEW: {
       en: "Add review by:",
       ru: "Создать обзор как:",
+    },
+  },
+  REVIEW: {
+    AUTHOR: {
+      en: "Author",
+      ru: "Автор",
+    },
+    COMMENT: {
+      en: "Comment",
+      ru: "Комментарий",
+    },
+    COMMENTS: {
+      en: "Comments",
+      ru: "Комментарии",
+    },
+    RATE: {
+      en: "Rate this review",
+      ru: "Оценить обзор",
+    },
+    LIKES: {
+      en: "Likes",
+      ru: "Лайков",
     },
   },
 };

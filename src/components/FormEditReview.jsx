@@ -41,7 +41,9 @@ const FormEditReview = () => {
   useEffect(() => {
     const getReviewById = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/reviews/${id}`);
+        const response = await axios.get(
+          `https://webapp-backend-production.up.railway.app/reviews/${id}`
+        );
         setTitle(response.data.title);
         setProduct(response.data.product);
         setGroup(response.data.group);
@@ -56,17 +58,20 @@ const FormEditReview = () => {
   const updateReview = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://localhost:5000/reviews/${id}`, {
-        titleImage,
-        title,
-        product,
-        group,
-        tag: value,
-        text,
-        rating,
-      });
+      await axios.post(
+        `https://webapp-backend-production.up.railway.app/reviews/${id}`,
+        {
+          titleImage,
+          title,
+          product,
+          group,
+          tag: value,
+          text,
+          rating,
+        }
+      );
       await axios
-        .post("http://localhost:5000/tags", {
+        .post("https://webapp-backend-production.up.railway.app/tags", {
           tag: value,
         })
         .then(navigate("/"));
@@ -75,7 +80,9 @@ const FormEditReview = () => {
 
   const getTags = React.useCallback(async () => {
     try {
-      const response = await axios.get("http://localhost:5000/tags");
+      const response = await axios.get(
+        "https://webapp-backend-production.up.railway.app/tags"
+      );
       setTags(response.data);
     } catch (error) {}
   }, []);

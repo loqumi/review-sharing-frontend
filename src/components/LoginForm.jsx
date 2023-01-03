@@ -24,9 +24,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isSuccess, isLoading } = useSelector(
-    (state) => state.auth
-  );
+  const { user, isSuccess, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (user || isSuccess) {
@@ -42,15 +40,24 @@ const LoginForm = () => {
   };
 
   const google = () => {
-    window.open("http://localhost:5000/google", "_self");
+    window.open(
+      "https://webapp-backend-production.up.railway.app/google",
+      "_self"
+    );
   };
 
   const github = () => {
-    window.open("http://localhost:5000/github", "_self");
+    window.open(
+      "https://webapp-backend-production.up.railway.app/github",
+      "_self"
+    );
   };
 
   const discord = () => {
-    window.open("http://localhost:5000/discord", "_self");
+    window.open(
+      "https://webapp-backend-production.up.railway.app/discord",
+      "_self"
+    );
   };
 
   return (

@@ -41,7 +41,7 @@ const Profile = () => {
   const getUserLikes = React.useCallback(async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/user/rating/?userId=${id}`
+        `https://webapp-backend-production.up.railway.app/user/rating/?userId=${id}`
       );
       setLikes(response.data);
     } catch (error) {}
@@ -49,7 +49,9 @@ const Profile = () => {
 
   const getUserById = React.useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/users/${id}`);
+      const response = await axios.get(
+        `https://webapp-backend-production.up.railway.app/users/${id}`
+      );
       setName(response.data.name);
       setRole(response.data.role);
     } catch (error) {}
@@ -57,14 +59,18 @@ const Profile = () => {
 
   const getReviews = React.useCallback(async () => {
     const response = await axios
-      .get(`http://localhost:5000/reviews/?userId=${id}`)
+      .get(
+        `https://webapp-backend-production.up.railway.app/reviews/?userId=${id}`
+      )
       .catch(login);
     setReviews(response.data);
   }, [id, login]);
 
   const deleteReview = async (reviewId) => {
     await axios
-      .delete(`http://localhost:5000/reviews/${reviewId}`)
+      .delete(
+        `https://webapp-backend-production.up.railway.app/reviews/${reviewId}`
+      )
       .catch(login);
     getReviews();
   };

@@ -14,6 +14,7 @@ import EditReview from "./pages/EditReview";
 import EditUser from "./pages/EditUser";
 import Review from "./pages/Review";
 import Navbar from "./components/Navbar";
+import Results from "./pages/Results";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -51,6 +52,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/reg" element={<Registration />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/search/:query" element={<Results />} />
+          <Route path="/search/" element={<Results />} />
           <Route path="/users/edit/:id" element={<EditUser />} />
           <Route path="/" element={<Reviews />} />
           <Route path="/reviews/:id" element={<Review />} />
