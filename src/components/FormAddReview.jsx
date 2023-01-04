@@ -28,6 +28,7 @@ import { INTL } from "../constants/intl";
 const URL = "https://webapp-backend-production.up.railway.app";
 
 const FormAddReview = () => {
+  const [disabled, setDisabled] = useState(false);
   const [title, setTitle] = useState("");
   const [product, setProduct] = useState("");
   const [group, setGroup] = useState("");
@@ -40,6 +41,7 @@ const FormAddReview = () => {
   const navigate = useNavigate();
 
   const saveReview = async (e) => {
+    setDisabled(true);
     e.preventDefault();
     try {
       await axios.post(`${URL}/reviews/`, {
@@ -244,6 +246,7 @@ const FormAddReview = () => {
             </Grid>
           </Grid>
           <Button
+            disabled={disabled}
             type="submit"
             fullWidth
             variant="contained"

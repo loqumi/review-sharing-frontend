@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -34,6 +34,7 @@ const Review = () => {
   const [liked, setLiked] = useState([]);
   const [likes, setLikes] = useState("");
   const { id } = useParams();
+  const reportTemplateRef = useRef(null);
   const no_image =
     "https://firebasestorage.googleapis.com/v0/b/cloud-storage-3201c.appspot.com/o/files%2Fno-image.png?alt=media&token=eeda5f87-0329-420e-863c-d0f9d3b41424";
 
@@ -110,7 +111,7 @@ const Review = () => {
   }, [getComments, getReviewById, getUserLikes]);
 
   return (
-    <Container component="main">
+    <Container component="main" ref={reportTemplateRef}>
       <CssBaseline />
       <Box
         sx={{
@@ -241,7 +242,7 @@ const Review = () => {
             <Grid container spacing={2} marginTop={2}>
               <Grid
                 item
-                xs={3}
+                xs={6}
                 display={"flex"}
                 justifyContent="left"
                 marginTop={2}
@@ -252,9 +253,9 @@ const Review = () => {
               </Grid>
               <Grid
                 item
-                xs={3}
+                xs={12}
                 display={"flex"}
-                justifyContent="left"
+                justifyContent="center"
                 marginTop={2}
               >
                 <Typography component="h1" variant="h5">
@@ -269,9 +270,9 @@ const Review = () => {
               </Grid>
               <Grid
                 item
-                xs={6}
+                xs={12}
                 display={"flex"}
-                justifyContent="left"
+                justifyContent="center"
                 marginTop={2}
               >
                 <Typography component="h1" variant="h5">
