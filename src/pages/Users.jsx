@@ -1,17 +1,9 @@
-import React, { useEffect } from "react";
-import Userlist from "../components/Userlist";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import Userlist from "../components/Admin/Userlist";
+import LoginErrorCatcher from "../utils/LoginErrorCatcherFunc";
 
 const UsersPage = () => {
-  const navigate = useNavigate();
-  const { isError, user } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (isError) {
-      navigate("/");
-    }
-  }, [isError, user, navigate]);
+  LoginErrorCatcher()
   return <Userlist />;
 };
 

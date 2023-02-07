@@ -1,7 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+/.idea
+/public
 /node_modules
+/.firebase
 /.pnp
 .pnp.js
 
@@ -12,6 +15,8 @@
 /build
 
 # misc
+.firebaserc
+firebase.json
 .DS_Store
 .env.local
 .env.development.local

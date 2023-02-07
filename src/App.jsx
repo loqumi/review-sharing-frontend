@@ -13,7 +13,7 @@ import AddReviewID from "./pages/AddReviewID";
 import EditReview from "./pages/EditReview";
 import EditUser from "./pages/EditUser";
 import Review from "./pages/Review";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import Results from "./pages/Results";
 
 function App() {
