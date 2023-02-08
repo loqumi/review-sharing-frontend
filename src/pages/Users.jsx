@@ -3,8 +3,8 @@ import Userlist from "../components/Admin/Userlist";
 import LoginErrorCatcher from "../utils/LoginErrorCatcherFunc";
 
 const UsersPage = () => {
-  LoginErrorCatcher()
-  return <Userlist />;
+    LoginErrorCatcher()
+    return <Userlist/>;
 };
 
 export default UsersPage;

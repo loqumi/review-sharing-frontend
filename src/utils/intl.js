@@ -1,5 +1,5 @@
 export const intl = (item = {}) => {
-  const lang = localStorage.getItem("lang") || "en";
+    const lang = localStorage.getItem("lang") || "en";
 
-  return item[lang] || "";
+    return item[lang] || "";
 };

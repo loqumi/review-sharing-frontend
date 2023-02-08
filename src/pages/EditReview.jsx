@@ -3,8 +3,8 @@ import FormEditReview from "../components/ReviewControl/Form/FormEditReview";
 import LoginErrorCatcher from "../utils/LoginErrorCatcherFunc";
 
 const EditReviewPage = () => {
-  LoginErrorCatcher()
-  return <FormEditReview />;
+    LoginErrorCatcher()
+    return <FormEditReview/>;
 };
 
 export default EditReviewPage;
