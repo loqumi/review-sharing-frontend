@@ -5,7 +5,7 @@ export const INTL = {
       ru: "Обзоры",
     },
     ADD_REVIEW: {
-      en: "Add Review",
+      en: "Add ReviewControl",
       ru: "Новый обзор",
     },
     USERS: {
@@ -123,7 +123,7 @@ export const INTL = {
   },
   FORM_ADD_REVIEW: {
     NEW_REVIEW: {
-      en: "New Review Deploy",
+      en: "New ReviewControl Deploy",
       ru: "Создание нового обзора",
     },
     DND: {

@@ -8,7 +8,7 @@ const initialState = {
   isLoading: false,
   message: "",
 };
-const URL = "https://webapp-backend-production.up.railway.app";
+const URL = "http://localhost:5000";
 
 export const LoginUser = createAsyncThunk(
   "user/LoginUser",

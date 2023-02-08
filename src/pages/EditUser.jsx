@@ -1,17 +1,9 @@
-import React, { useEffect } from "react";
-import FormEditUser from "../components/FormEditUser";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import FormEditUser from "../components/User/FormEditUser";
+import LoginErrorCatcher from "../utils/LoginErrorCatcherFunc";
 
 const EditUserPage = () => {
-  const navigate = useNavigate();
-  const { isError, user } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (isError) {
-      navigate("/");
-    }
-  }, [isError, user, navigate]);
+  LoginErrorCatcher()
   return <FormEditUser />;
 };
 
