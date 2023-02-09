@@ -13,6 +13,7 @@ import {intl} from "../../../utils/intl";
 import {INTL} from "../../../constants/intl";
 
 const ReviewModel = ({review, tag, commonRating, username, no_image, likes}) => {
+    const calculatedValue = commonRating.length === 0 ? 0 : commonRating.reduce((a, b) => Number(a) + Number(b)) / commonRating.length
     return (
         <Card
             sx={{
@@ -22,26 +23,14 @@ const ReviewModel = ({review, tag, commonRating, username, no_image, likes}) => 
                 alignItems: "center",
             }}
         >
-            {review.titleImage === null && (
-                <CardMedia
-                    component="img"
-                    image={no_image}
-                    alt="titleImage"
-                    sx={{
-                        width: "50%",
-                    }}
-                />
-            )}
-            {review.titleImage !== null && (
-                <CardMedia
-                    component="img"
-                    image={review.titleImage}
-                    alt="titleImage"
-                    sx={{
-                        width: "50%",
-                    }}
-                />
-            )}
+            <CardMedia
+                component="img"
+                image={review.titleImage ? review.titleImage : no_image}
+                alt="titleImage"
+                sx={{
+                    width: "50%",
+                }}
+            />
             <CardContent sx={{flexGrow: 1}}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} display={"flex"} justifyContent="center">
@@ -54,15 +43,12 @@ const ReviewModel = ({review, tag, commonRating, username, no_image, likes}) => 
                             {intl(INTL.FORM_ADD_REVIEW.PRODUCT)}: {review.product}
                         </Typography>
                     </Grid>
-                    {commonRating.length > 0 && (
-                        <Grid item xs={12} display={"flex"} justifyContent="left">
-                            <Typography component="h1" variant="h5">
-                                {commonRating.reduce((a, b) => Number(a) + Number(b)) /
-                                    commonRating.length}
-                            </Typography>
-                            <Rating value={1} max={1} readOnly size="large"/>
-                        </Grid>
-                    )}
+                    <Grid item xs={12} display={"flex"} justifyContent="left">
+                        <Typography component="h1" variant="h5">
+                            {calculatedValue}
+                        </Typography>
+                        <Rating value={1} max={1} readOnly size="large"/>
+                    </Grid>
                     <Grid item xs={12} display={"flex"} justifyContent="left">
                         <Typography component="h1" variant="h5">
                             {intl(INTL.FORM_ADD_REVIEW.GROUP)}:
