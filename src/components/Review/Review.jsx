@@ -13,7 +13,7 @@ import {intl} from "../../utils/intl";
 import {INTL} from "../../constants/intl";
 import {URL} from "../../constants/URL";
 import Controls from "./UserControls/Controls";
-import Comments from "./UserControls/Comments";
+import Comment from "./UserControls/Comment";
 
 const Review = () => {
     const {user} = useSelector((state) => state.auth);
@@ -73,6 +73,7 @@ const Review = () => {
         getComments();
         getUserLikes();
     }, [getComments, getReviewById, getUserLikes]);
+
     return (
         <Container component="main">
             <CssBaseline/>
@@ -105,8 +106,8 @@ const Review = () => {
                             {intl(INTL.REVIEW.COMMENTS)}
                         </Typography>
                     )}
-                    {comments.map((comments) => (
-                        <Comments comments={comments}/>
+                    {comments.map((comment) => (
+                        <Comment {...comment} key={comment.uuid}/>
                     ))}
                 </Box>
             </Box>

@@ -13,7 +13,8 @@ import {intl} from "../../../utils/intl";
 import {INTL} from "../../../constants/intl";
 
 const ReviewModel = ({review, tag, commonRating, username, no_image, likes}) => {
-    const calculatedValue = commonRating.length === 0 ? 0 : commonRating.reduce((a, b) => Number(a) + Number(b)) / commonRating.length
+    const rating = (commonRating || []);
+    const calculatedValue = (rating.reduce((a, b) => (+a + +b) / rating.length, 0))
     return (
         <Card
             sx={{

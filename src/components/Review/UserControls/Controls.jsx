@@ -12,6 +12,12 @@ const Controls = ({user, review, rating, setRating, liked, setLiked}) => {
     const [comments, setComments] = useState([]);
     const {id} = useParams();
 
+    const handleClickRating = (e) => {
+        sendRating(e.target.value)
+    }
+    const handleChangeComment = (e) => {
+        setComment(e.target.value)
+    }
     const handleSetLike = async () => {
         try {
             const response = await axios.get(`${URL}/reviews/like/${id}`);
@@ -96,7 +102,7 @@ const Controls = ({user, review, rating, setRating, liked, setLiked}) => {
                         {intl(INTL.FORM_ADD_REVIEW.RATING)}:
                     </Typography>
                     <Rating
-                        onClick={(e) => sendRating(e.target.value)}
+                        onClick={(e) => handleClickRating(e)}
                         size="large"
                         value={Number(rating)}
                     />
@@ -109,7 +115,7 @@ const Controls = ({user, review, rating, setRating, liked, setLiked}) => {
                         label={intl(INTL.REVIEW.COMMENT)}
                         autoFocus
                         value={comment}
-                        onChange={(e) => setComment(e.target.value)}
+                        onChange={(e) => handleChangeComment(e)}
                     />
                 </Grid>
             </Grid>

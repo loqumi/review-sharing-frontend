@@ -6,10 +6,9 @@ import {
     Typography,
 } from "@mui/material";
 
-const Comments = ({comments}) => {
+const Comment = ({title, name}) => {
     return (
         <Card
-            key={comments.uuid}
             sx={{
                 marginTop: 1,
                 width: "50%",
@@ -22,12 +21,12 @@ const Comments = ({comments}) => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} display={"flex"} justifyContent="left">
                         <Typography component="h1" variant="h5">
-                            {comments.title}
+                            {title}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} display={"flex"} justifyContent="left">
                         <Typography component="h1" variant="h5">
-                            {comments.name}
+                            {name}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -36,4 +35,4 @@ const Comments = ({comments}) => {
     );
 };
 
-export default Comments;
+export default Comment;
