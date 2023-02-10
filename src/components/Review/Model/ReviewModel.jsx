@@ -13,8 +13,8 @@ import {intl} from "../../../utils/intl";
 import {INTL} from "../../../constants/intl";
 
 const ReviewModel = ({review, tag, commonRating, username, no_image, likes}) => {
-    const rating = (commonRating || []);
-    const calculatedValue = rating.reduce((a, b) => (+a + +b) / rating.length, 0)
+    const rating = commonRating || [];
+    const usersRating = rating.reduce((a, b) => (+a + +b) / rating.length, 0)
     return (
         <Card
             sx={{
@@ -46,7 +46,7 @@ const ReviewModel = ({review, tag, commonRating, username, no_image, likes}) => 
                     </Grid>
                     <Grid item xs={12} display={"flex"} justifyContent="left">
                         <Typography component="h1" variant="h5">
-                            {calculatedValue}
+                            {usersRating}
                         </Typography>
                         <Rating value={1} max={1} readOnly size="large"/>
                     </Grid>
