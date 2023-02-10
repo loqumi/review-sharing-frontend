@@ -18,7 +18,7 @@ import {INTL} from "../../../constants/intl";
 
 const ReviewCardModel = ({review, no_image}) => {
     const productRating = Object.values(JSON.parse(review.productRating)) || [];
-    const calculatedValue = (productRating.reduce((a, b) => (+a + +b) / productRating.length, 0))
+    const calculatedValue = productRating.reduce((a, b) => (+a + +b) / productRating.length, 0)
     const tags = JSON.parse(review.tag).map((review) => review + " ")
     const likesCount = JSON.parse(review.liked).length
     const navigate = useNavigate();

@@ -102,7 +102,7 @@ const Controls = ({user, review, rating, setRating, liked, setLiked}) => {
                         {intl(INTL.FORM_ADD_REVIEW.RATING)}:
                     </Typography>
                     <Rating
-                        onClick={(e) => handleClickRating(e)}
+                        onClick={handleClickRating}
                         size="large"
                         value={Number(rating)}
                     />
@@ -115,7 +115,7 @@ const Controls = ({user, review, rating, setRating, liked, setLiked}) => {
                         label={intl(INTL.REVIEW.COMMENT)}
                         autoFocus
                         value={comment}
-                        onChange={(e) => handleChangeComment(e)}
+                        onChange={handleChangeComment}
                     />
                 </Grid>
             </Grid>
