@@ -1,4 +1,4 @@
-# Review share application
+# Review sharing application
 
 Application for viewing, creating and managing reviews.
 
