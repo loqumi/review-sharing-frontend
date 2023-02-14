@@ -15,6 +15,7 @@ import EditUser from "./pages/EditUser";
 import Review from "./pages/Review";
 import Navbar from "./components/Navbar/Navbar";
 import Results from "./pages/Results";
+import {CssBaseline} from "@mui/material";
 
 function App() {
     const [darkMode, setDarkMode] = useState(false);
@@ -45,6 +46,7 @@ function App() {
     return (
         <BrowserRouter>
             <ThemeProvider theme={theme}>
+                <CssBaseline/>
                 <Navbar onClick={handleClick} onChange={handleChange}/>
                 <Routes>
                     <Route path="/profile/:id" element={<Profile/>}/>
